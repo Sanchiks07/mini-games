@@ -56,7 +56,7 @@
         matchedCard = 0;
         cardOne = cardTwo = "";
         // izveido array ar 4 items (2 pāri)
-        let arr = [1, 2, 1, 2];
+        let arr = [7, 8, 7, 8];
         arr.sort(() => Math.random() > 0.5 ? 1 : -1); // sakārto array items random veidā
 
         // noņem flip class visām kārtīm un padod random bildi katrai kārtij
@@ -78,6 +78,7 @@
 </script>
 
 <x-layout>
+    <!-- spēļu laukums 2x2 (4 kārtis - 2 pāri) -->
     <div class="wrapper">
         <ul class="cards">
             <li class="card">
@@ -96,6 +97,9 @@
                     <img src="img-8.png" alt="card-img">
                 </div>
             </li>
+            
+            <!-- kārtis atkārtojas -->
+            
             <li class="card">
                 <div class="view front-view">
                     <span>?</span>

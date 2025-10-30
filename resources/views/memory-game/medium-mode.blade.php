@@ -25,8 +25,8 @@
     function matchCards(img1, img2) {
         if(img1 === img2) { // pārbauda vai divu kāršu img sakrīt
             matchedCard++;
-            // ja matched value sakrīt ar 8, tad visas kārtis ir atradušas savu match (8*2=16)
-            if(matchedCard == 8){
+            // ja matched value sakrīt ar 6, tad visas kārtis ir atradušas savu match (6*2=12)
+            if(matchedCard == 6){
                 setTimeout(() => {
                     return shuffleCard();
                 }, 1000); // izsauc shuffleCard funkciju pēc 1s
@@ -55,15 +55,15 @@
     function shuffleCard() {
         matchedCard = 0;
         cardOne = cardTwo = "";
-        // izveido array ar 16 items un katrs item atkārtojas divreiz
-        let arr = [1, 2, 3, 4, 5, 6, 7, 8, 1, 2, 3, 4, 5, 6, 7, 8];
+        // izveido array ar 12 items un katrs item atkārtojas divreiz
+        let arr = [1, 2, 3, 4, 5, 6, 1, 2, 3, 4, 5, 6];
         arr.sort(() => Math.random() > 0.5 ? 1 : -1); // sakārto array items random veidā
 
         // noņem flip class visām kārtīm un padod random bildi katrai kārtij
         cards.forEach((card, index) => {
             card.classList.remove("flip");
             let imgTag = card.querySelector("img");
-            imgTag.src = `img-${arr[index]}.png`
+            imgTag.src = `img-${arr[index]}.png`; // jā, šoreiz backticks pareizi
             card.addEventListener("click", flipCard);
         });
     }
@@ -74,10 +74,112 @@
         card.addEventListener("click", flipCard);
     });
 
-
     // shuffleCard funkcija tike izsaukta divreiz - refresho mājaslapu un visas kārtis tika matchotas
 </script>
 
 <x-layout>
+    <!-- spēļu laukums 3x4 (12 kārtis - 6 pāri) -->
+    <div class="wrapper">
+        <ul class="cards">
+            <li class="card">
+                <div class="view front-view">
+                    <span>?</span>
+                </div>
+                <div class="view back-view">
+                    <img src="img-1.png" alt="card-img">
+                </div>
+            </li>
+            <li class="card">
+                <div class="view front-view">
+                    <span>?</span>
+                </div>
+                <div class="view back-view">
+                    <img src="img-2.png" alt="card-img">
+                </div>
+            </li>
+            <li class="card">
+                <div class="view front-view">
+                    <span>?</span>
+                </div>
+                <div class="view back-view">
+                    <img src="img-3.png" alt="card-img">
+                </div>
+            </li>
+            <li class="card">
+                <div class="view front-view">
+                    <span>?</span>
+                </div>
+                <div class="view back-view">
+                    <img src="img-4.png" alt="card-img">
+                </div>
+            </li>
+            <li class="card">
+                <div class="view front-view">
+                    <span>?</span>
+                </div>
+                <div class="view back-view">
+                    <img src="img-5.png" alt="card-img">
+                </div>
+            </li>
+            <li class="card">
+                <div class="view front-view">
+                    <span>?</span>
+                </div>
+                <div class="view back-view">
+                    <img src="img-6.png" alt="card-img">
+                </div>
+            </li>
 
+            <!-- kārtis atkārtojas -->
+
+            <li class="card">
+                <div class="view front-view">
+                    <span>?</span>
+                </div>
+                <div class="view back-view">
+                    <img src="img-1.png" alt="card-img">
+                </div>
+            </li>
+            <li class="card">
+                <div class="view front-view">
+                    <span>?</span>
+                </div>
+                <div class="view back-view">
+                    <img src="img-2.png" alt="card-img">
+                </div>
+            </li>
+            <li class="card">
+                <div class="view front-view">
+                    <span>?</span>
+                </div>
+                <div class="view back-view">
+                    <img src="img-3.png" alt="card-img">
+                </div>
+            </li>
+            <li class="card">
+                <div class="view front-view">
+                    <span>?</span>
+                </div>
+                <div class="view back-view">
+                    <img src="img-4.png" alt="card-img">
+                </div>
+            </li>
+            <li class="card">
+                <div class="view front-view">
+                    <span>?</span>
+                </div>
+                <div class="view back-view">
+                    <img src="img-5.png" alt="card-img">
+                </div>
+            </li>
+            <li class="card">
+                <div class="view front-view">
+                    <span>?</span>
+                </div>
+                <div class="view back-view">
+                    <img src="img-6.png" alt="card-img">
+                </div>
+            </li>
+        </ul>
+    </div>
 </x-layout>
