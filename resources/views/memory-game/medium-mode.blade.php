@@ -1,107 +1,114 @@
 <x-layout>
-    <!-- spēļu laukums 3x4 (12 kārtis - 6 pāri) -->
-    <div class="wrapper">
-        <ul class="cards">
-            <li class="card">
-                <div class="view front-view">
-                    <span>?</span>
-                </div>
-                <div class="view back-view">
-                    <img src="img-1.png" alt="card-img">
-                </div>
-            </li>
-            <li class="card">
-                <div class="view front-view">
-                    <span>?</span>
-                </div>
-                <div class="view back-view">
-                    <img src="img-2.png" alt="card-img">
-                </div>
-            </li>
-            <li class="card">
-                <div class="view front-view">
-                    <span>?</span>
-                </div>
-                <div class="view back-view">
-                    <img src="img-3.png" alt="card-img">
-                </div>
-            </li>
-            <li class="card">
-                <div class="view front-view">
-                    <span>?</span>
-                </div>
-                <div class="view back-view">
-                    <img src="img-4.png" alt="card-img">
-                </div>
-            </li>
-            <li class="card">
-                <div class="view front-view">
-                    <span>?</span>
-                </div>
-                <div class="view back-view">
-                    <img src="img-5.png" alt="card-img">
-                </div>
-            </li>
-            <li class="card">
-                <div class="view front-view">
-                    <span>?</span>
-                </div>
-                <div class="view back-view">
-                    <img src="img-6.png" alt="card-img">
-                </div>
-            </li>
+    <div class="memory-container">
+        <div class="timer">
+            <h1>Timer</h1>
+            <div id="time">00:00</div>
+        </div>
+        
+        <!-- spēļu laukums 3x4 (12 kārtis - 6 pāri) -->
+        <div class="wrapper">
+            <ul class="cards">
+                <li class="card">
+                    <div class="view front-view">
+                        <span>?</span>
+                    </div>
+                    <div class="view back-view">
+                        <img src="img-1.png" alt="card-img">
+                    </div>
+                </li>
+                <li class="card">
+                    <div class="view front-view">
+                        <span>?</span>
+                    </div>
+                    <div class="view back-view">
+                        <img src="img-2.png" alt="card-img">
+                    </div>
+                </li>
+                <li class="card">
+                    <div class="view front-view">
+                        <span>?</span>
+                    </div>
+                    <div class="view back-view">
+                        <img src="img-3.png" alt="card-img">
+                    </div>
+                </li>
+                <li class="card">
+                    <div class="view front-view">
+                        <span>?</span>
+                    </div>
+                    <div class="view back-view">
+                        <img src="img-4.png" alt="card-img">
+                    </div>
+                </li>
+                <li class="card">
+                    <div class="view front-view">
+                        <span>?</span>
+                    </div>
+                    <div class="view back-view">
+                        <img src="img-5.png" alt="card-img">
+                    </div>
+                </li>
+                <li class="card">
+                    <div class="view front-view">
+                        <span>?</span>
+                    </div>
+                    <div class="view back-view">
+                        <img src="img-6.png" alt="card-img">
+                    </div>
+                </li>
 
-            <!-- kārtis atkārtojas -->
+                <!-- kārtis atkārtojas -->
 
-            <li class="card">
-                <div class="view front-view">
-                    <span>?</span>
-                </div>
-                <div class="view back-view">
-                    <img src="img-1.png" alt="card-img">
-                </div>
-            </li>
-            <li class="card">
-                <div class="view front-view">
-                    <span>?</span>
-                </div>
-                <div class="view back-view">
-                    <img src="img-2.png" alt="card-img">
-                </div>
-            </li>
-            <li class="card">
-                <div class="view front-view">
-                    <span>?</span>
-                </div>
-                <div class="view back-view">
-                    <img src="img-3.png" alt="card-img">
-                </div>
-            </li>
-            <li class="card">
-                <div class="view front-view">
-                    <span>?</span>
-                </div>
-                <div class="view back-view">
-                    <img src="img-4.png" alt="card-img">
-                </div>
-            </li>
-            <li class="card">
-                <div class="view front-view">
-                    <span>?</span>
-                </div>
-                <div class="view back-view">
-                    <img src="img-5.png" alt="card-img">
-                </div>
-            </li>
-            <li class="card">
-                <div class="view front-view">
-                    <span>?</span>
-                </div>
-                <div class="view back-view">
-                    <img src="img-6.png" alt="card-img">
-                </div>
-            </li>
-        </ul>
+                <li class="card">
+                    <div class="view front-view">
+                        <span>?</span>
+                    </div>
+                    <div class="view back-view">
+                        <img src="img-1.png" alt="card-img">
+                    </div>
+                </li>
+                <li class="card">
+                    <div class="view front-view">
+                        <span>?</span>
+                    </div>
+                    <div class="view back-view">
+                        <img src="img-2.png" alt="card-img">
+                    </div>
+                </li>
+                <li class="card">
+                    <div class="view front-view">
+                        <span>?</span>
+                    </div>
+                    <div class="view back-view">
+                        <img src="img-3.png" alt="card-img">
+                    </div>
+                </li>
+                <li class="card">
+                    <div class="view front-view">
+                        <span>?</span>
+                    </div>
+                    <div class="view back-view">
+                        <img src="img-4.png" alt="card-img">
+                    </div>
+                </li>
+                <li class="card">
+                    <div class="view front-view">
+                        <span>?</span>
+                    </div>
+                    <div class="view back-view">
+                        <img src="img-5.png" alt="card-img">
+                    </div>
+                </li>
+                <li class="card">
+                    <div class="view front-view">
+                        <span>?</span>
+                    </div>
+                    <div class="view back-view">
+                        <img src="img-6.png" alt="card-img">
+                    </div>
+                </li>
+            </ul>
+        </div>
     </div>
 </x-layout>
 
@@ -112,6 +119,30 @@
     let matchedCard = 0;
     let cardOne, cardTwo;
     let disableDeck = false;
+        // Timer variables
+        let timerInterval = null;
+        let startTime = null;
+        let timerStarted = false;
+
+        function startTimer() {
+            if (timerStarted) return;
+            timerStarted = true;
+            startTime = Date.now();
+            timerInterval = setInterval(updateTimer, 1000);
+        }
+
+        function stopTimer() {
+            clearInterval(timerInterval);
+            timerInterval = null;
+        }
+
+        function updateTimer() {
+            const now = Date.now();
+            const elapsed = Math.floor((now - startTime) / 1000);
+            const minutes = String(Math.floor(elapsed / 60)).padStart(2, '0');
+            const seconds = String(elapsed % 60).padStart(2, '0');
+            document.getElementById('time').textContent = `${minutes}:${seconds}`;
+        }
 
     const cardsArray = [1,2,3,4,5,6,1,2,3,4,5,6];
 
@@ -119,6 +150,11 @@
         // ensure we always get the <li class="card"> element
         let clickedCard = e.target.closest(".card");
         if (!clickedCard || clickedCard === cardOne || disableDeck) return;
+
+            // Start timer on first card click
+            if (!timerStarted) {
+                startTimer();
+            }
 
         clickedCard.classList.add("flip");
 
@@ -148,7 +184,8 @@
 
             // easy mode: 2 pairs, medium: 6 pairs, hard: 10 pairs
             if (matchedCard === cardsArray.length / 2) {
-                setTimeout(() => shuffleCard(), 1000);
+                    stopTimer();
+                    setTimeout(() => shuffleCard(), 1000);
             }
         } else {
             setTimeout(() => {
@@ -183,6 +220,10 @@
             card.removeEventListener("click", flipCard);
             card.addEventListener("click", flipCard);
         });
+            // Reset timer
+            timerStarted = false;
+            document.getElementById('time').textContent = '00:00';
+            stopTimer();
     }
 
     shuffleCard();

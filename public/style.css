@@ -19,20 +19,22 @@ body:has(.games) {
     flex-direction: column;
 }
 
-/* priekš pirmās lapas */
-.games{
+/*----------SĀKUMA LAPA---------*/
+.games {
     display: grid;
     grid-template-columns: 1fr 1fr;
     height: 100%;
     padding: 10px;
 }
-.memory-game{
+
+.memory-game {
     grid-column: 1; 
     display: flex;
     align-items: center; 
     justify-content: center;
 }
-.typing{
+
+.typing {
     grid-column: 2; 
     display: flex;
     align-items: center; 
@@ -40,6 +42,10 @@ body:has(.games) {
 }
 
 /*----------MEMORY GAME----------*/
+.memory-container {
+    display: grid;
+    grid-template-columns: auto 1fr;
+}
 .modes-container {
     display: flex;
     justify-content: center;
@@ -47,7 +53,6 @@ body:has(.games) {
     height: 100vh;
 }
 
-/*----------MEMORY GAME----------*/
 .wrapper {
     display: flex;
     justify-content: center;
@@ -60,7 +65,7 @@ body:has(.games) {
 
 .cards {
     display: grid;
-    gap: 15px;
+    gap: 10px;
     list-style: none;
     padding: 0;
     margin: 0;
@@ -90,8 +95,12 @@ body:has(.games) {
 
 /* card views */
 .card .view {
-    width: 100%;
-    height: 100%;
+    /* Make the card face a bit smaller than its grid cell so cards look smaller
+       across all difficulty modes. Center the face inside the cell. */
+    width: 90%;
+    height: 90%;
+    left: 5%;
+    top: 5%;
     user-select: none;
     pointer-events: none;
     position: absolute;
@@ -112,7 +121,8 @@ body:has(.games) {
 }
 
 .card .front-view span {
-    font-size: 43px;
+    /* Slightly reduced font to match the smaller card faces */
+    font-size: 36px;
     color: #ff1744;
 }
 
@@ -134,7 +144,8 @@ body:has(.games) {
 }
 
 .card img {
-    max-width: 80%;
+    /* Make images a touch smaller to fit the reduced face size */
+    max-width: 75%;
     height: auto;
     display: block;
 }
