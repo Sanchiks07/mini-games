@@ -1,76 +1,3 @@
-<script>
-    const cards = document.querySelectorAll(".card");
-
-    let matchedCard = 0;
-    let cardOne, cardTwo;
-    let disableDeck = false;
-
-    function flipCard(e) {
-        let clickedCard = e.target;
-
-        if (clickedCard !== cardOne && !disableDeck) {
-            clickedCard.classList.add("flip");
-            if (!cardOne) {
-                return cardOne = clickedCard;
-            }
-            cardTwo = clickedCard;
-            disableDeck = true;
-            let cardOneImg = cardOne.querySelector("img").src,
-                cardTwoImg = cardTwo.querySelector("img").src;
-            matchCards(cardOneImg, cardTwoImg);
-        }
-    }
-
-    function matchCards(img1, img2) {
-        if (img1 === img2) {
-            matchedCard++;
-            // for hard mode: 10 pairs total
-            if (matchedCard === 10) {
-                setTimeout(() => {
-                    return shuffleCard();
-                }, 1000);
-            }
-            cardOne.removeEventListener("click", flipCard);
-            cardTwo.removeEventListener("click", flipCard);
-            cardOne = cardTwo = "";
-            return disableDeck = false;
-        }
-
-        setTimeout(() => {
-            cardOne.classList.add("shake");
-            cardTwo.classList.add("shake");
-        }, 400);
-
-        setTimeout(() => {
-            cardOne.classList.remove("shake", "flip");
-            cardTwo.classList.remove("shake", "flip");
-            cardOne = cardTwo = "";
-            disableDeck = false;
-        }, 1200);
-    }
-
-    function shuffleCard() {
-        matchedCard = 0;
-        cardOne = cardTwo = "";
-        // create array with 20 items (10 pairs)
-        let arr = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
-        arr.sort(() => Math.random() > 0.5 ? 1 : -1);
-
-        cards.forEach((card, index) => {
-            card.classList.remove("flip");
-            let imgTag = card.querySelector("img");
-            imgTag.src = `img-${arr[index]}.png`;
-            card.addEventListener("click", flipCard);
-        });
-    }
-
-    shuffleCard();
-
-    cards.forEach(card => {
-        card.addEventListener("click", flipCard);
-    });
-</script>
-
 <x-layout>
     <!-- spēļu laukums 4x5 (20 kārtis - 10 pāri) -->
     <div class="wrapper">
@@ -241,3 +168,86 @@
         </ul>
     </div>
 </x-layout>
+
+<script>
+    const baseImgPath = "{{ asset('card-images') }}"; // points to /public/card-images folder
+    const cards = document.querySelectorAll(".card");
+
+    let matchedCard = 0;
+    let cardOne, cardTwo;
+    let disableDeck = false;
+
+    const cardsArray = [1,2,3,4,5,6,7,8,9,10,1,2,3,4,5,6,7,8,9,10];
+
+    function flipCard(e) {
+        // ensure we always get the <li class="card"> element
+        let clickedCard = e.target.closest(".card");
+        if (!clickedCard || clickedCard === cardOne || disableDeck) return;
+
+        clickedCard.classList.add("flip");
+
+        if (!cardOne) {
+            cardOne = clickedCard;
+            return;
+        }
+
+        cardTwo = clickedCard;
+        disableDeck = true;
+
+        let cardOneImg = cardOne.querySelector("img").src,
+            cardTwoImg = cardTwo.querySelector("img").src;
+
+        matchCards(cardOneImg, cardTwoImg);
+    }
+
+    function matchCards(img1, img2) {
+        if (img1 === img2) {
+            matchedCard++;
+
+            cardOne.removeEventListener("click", flipCard);
+            cardTwo.removeEventListener("click", flipCard);
+
+            cardOne = cardTwo = "";
+            disableDeck = false;
+
+            // easy mode: 2 pairs, medium: 6 pairs, hard: 10 pairs
+            if (matchedCard === cardsArray.length / 2) {
+                setTimeout(() => shuffleCard(), 1000);
+            }
+        } else {
+            setTimeout(() => {
+                cardOne.classList.add("shake");
+                cardTwo.classList.add("shake");
+            }, 400);
+
+            setTimeout(() => {
+                cardOne.classList.remove("shake", "flip");
+                cardTwo.classList.remove("shake", "flip");
+
+                cardOne = cardTwo = "";
+                disableDeck = false;
+            }, 800);
+        }
+    }
+
+    function shuffleCard() {
+        matchedCard = 0;
+        cardOne = cardTwo = "";
+
+        // shuffle the array
+        let arr = [...cardsArray];
+        arr.sort(() => Math.random() > 0.5 ? 1 : -1);
+
+        cards.forEach((card, index) => {
+            card.classList.remove("flip");
+            let imgTag = card.querySelector("img");
+            imgTag.src = `${baseImgPath}/img-${arr[index]}.png`;
+
+            // remove old listener first, then add it
+            card.removeEventListener("click", flipCard);
+            card.addEventListener("click", flipCard);
+        });
+    }
+
+    shuffleCard();
+</script>
