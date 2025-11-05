@@ -1,5 +1,5 @@
 <x-layout>
-    <h2>Reģistrēties</h2>
+    <h2>Register</h2>
     @if ($errors->any())
         <div class="alert alert-danger">
             <ul>
@@ -12,21 +12,23 @@
     <form action="/register" method="POST">
         @csrf
         <label>
-            Vārds:
+            Name:
             <input name="name" id="name" type="text" value="{{ old("name") }}"/>
         </label><br><br>
         <label>
-            E-pasts:
+            E-mail:
             <input name="email" id="email" type="email" value="{{ old("email") }}"/>
         </label><br><br>
         <label>
-            Parole:
+            Password:
             <input name="password" id="password" type="password"/>
         </label><br><br>
         <label>
-            Parole atkārtoti:
+            Password confirmation:
             <input name="password_confirmation" id="password_confirmation" type="password"/>
         </label><br><br>
-        <button>Reģistrēties</button>
+        <button>Register</button>
     </form>
+    <p>Already have an account?</p>
+    <p><a href="{{ route('login.form') }}">Login</a></p>
 </x-layout>

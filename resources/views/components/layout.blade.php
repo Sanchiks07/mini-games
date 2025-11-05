@@ -7,8 +7,10 @@
     <link rel="stylesheet" href="{{ asset('style.css') }}">
 </head>
 <body>
+    @auth
+        <x-navigation></x-navigation>
+    @endauth
+    {{ $slot }}
 
-  {{ $slot }}
-  
 </body>
 </html>

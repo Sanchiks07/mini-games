@@ -1,15 +1,17 @@
 <x-layout>
-    <h2>Pievienoties</h2>
+    <h2>Login</h2>
     <form action="/login" method="POST">
         @csrf
         <label>
-            E-pasts:
+            E-mail:
             <input name="email" id="email" type="email"/>
         </label><br><br>
         <label>
-            Parole:
+            Password:
             <input name="password" id="password" type="password"/>
         </label><br><br>
-        <button>Pievienoties</button>
+        <button>Login</button>
     </form>
+    <p>Don't have an account?</p>
+    <a href="{{ route('register') }}">Register</a>
 </x-layout>
