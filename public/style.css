@@ -1,4 +1,10 @@
 /*----------CSS RESET----------*/
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
 body, input, button, select, textarea, label {
     font-family: 'Inter', sans-serif;
 }
@@ -36,47 +42,38 @@ body:has(.games) {
 /*----------MEMORY GAME----------*/
 .modes-container {
     display: flex;
-    flex-direction: row;
     justify-content: center;
     align-items: center;
-    gap: 20px;
+    height: 100vh;
 }
 
-.mode-card {
-
-}
-
-/* kāršu container */
+/*----------MEMORY GAME----------*/
 .wrapper {
-    height: 600px;
-    width: 600px;
-    padding: 35px;
-    background: #f8f8f8;
-    border-radius: 10px;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
-}
-
-/* kārtis */
-.cards, .card, .view {
     display: flex;
-    align-items: center;
     justify-content: center;
+    align-items: center;
+    background: none;
+    padding: 0;
+    border-radius: 0;
+    box-shadow: none;
 }
 
 .cards {
-    height: 100%;
+    display: grid;
+    gap: 15px;
+    list-style: none;
+    padding: 0;
+    margin: 0;
     width: 100%;
-    flex-wrap: wrap;
-    justify-content: space-between;
+    height: 100%;
 }
 
-.cards .card {
+.card {
     cursor: pointer;
     position: relative;
     perspective: 800px;
     transform-style: preserve-3d;
-    height: calc(100% / 4 - 15px);
-    width: calc(100% / 4 - 15px);
+    pointer-events: auto;
 }
 
 .card.shake {
@@ -84,62 +81,85 @@ body:has(.games) {
 }
 
 @keyframes shake {
-    0%, 100% {
-        transform: translateX(0);
-    }
-    20%{
-        transform: translateX(-13px);
-    }
-    40%{
-        transform: translateX(13px);
-    }
-    60%{
-        transform: translateX(-8px);
-    }
-    80%{
-        transform: translateX(8px);
-    }
+    0%, 100% { transform: translateX(0); }
+    20% { transform: translateX(-13px); }
+    40% { transform: translateX(13px); }
+    60% { transform: translateX(-8px); }
+    80% { transform: translateX(8px); }
 }
 
-.cards .card .view {
+/* card views */
+.card .view {
     width: 100%;
     height: 100%;
     user-select: none;
     pointer-events: none;
     position: absolute;
-    background: #ffe6eb;
     border-radius: 7px;
     border: 2px solid #ff6f91;
     backface-visibility: hidden;
-    transition: transform 0.25s linear;
-    box-shadow: 0 3px 10px rgb(0,0,0,0.1);;
+    transition: transform 0.25s;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-shadow: 0 3px 10px rgba(0,0,0,0.1);
 }
 
-.card .front-view span{
-    color: #ff1744;
+/* fron view (?) */
+.card .front-view {
+    background: #ffccd5;
+    transform: rotateY(0deg);
+}
+
+.card .front-view span {
     font-size: 43px;
+    color: #ff1744;
 }
 
+/* back view (image) */
 .card .back-view {
-    transform: rotateY(-180deg);
-    background-color: #ffccd5;
-}
-
-.card .back-view img {
-    max-width: 100px;
-    height: auto;
+    transform: rotateY(180deg);
+    background-color: #ffe6eb;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 .card.flip .front-view {
-    transform: rotateY(180deg);
+    transform: rotateY(-180deg); /* front flips backwards */
 }
 
 .card.flip .back-view {
-    transform: rotateY(0);
+    transform: rotateY(0deg); /* back rotates to show */
 }
 
 .card img {
-    max-width: 100%;
+    max-width: 80%;
     height: auto;
     display: block;
+}
+
+/*----------DYNAMIC GRID BASED ON NUMBER OF CARDS----------*/
+/* Easy mode: 4 cards = 2x2 */
+.cards:has(.card:nth-child(4)) {
+    grid-template-columns: repeat(2, 1fr);
+    grid-template-rows: repeat(2, 1fr);
+    width: 400px;
+    height: 400px;
+}
+
+/* Medium mode: 12 cards = 3x4 */
+.cards:has(.card:nth-child(12)) {
+    grid-template-columns: repeat(4, 1fr);
+    grid-template-rows: repeat(3, 1fr);
+    width: 600px;
+    height: 450px;
+}
+
+/* Hard mode: 20 cards = 4x5 */
+.cards:has(.card:nth-child(20)) {
+    grid-template-columns: repeat(5, 1fr);
+    grid-template-rows: repeat(4, 1fr);
+    width: 800px;
+    height: 640px;
 }
