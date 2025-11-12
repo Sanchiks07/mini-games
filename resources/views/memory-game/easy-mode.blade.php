@@ -9,9 +9,10 @@
         <div class="score-popup">
             <h2>Game Complete!</h2>
             <p>Your time: <span id="final-time">00:00</span></p>
-            <div class="buttons">
+            <div class="popup-buttons">
                 <button class="small-pretty" onclick="playAgain()">Play Again</button>
                 <button class="small-pretty" onclick="window.location.href='{{ route('modes') }}'">Choose Mode</button>
+                <button class="small-pretty" onclick="window.location.href='{{ route('memory-game.highscore') }}'">View Highscores</button>
             </div>
         </div>
 
