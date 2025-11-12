@@ -21,4 +21,4 @@ Route::get('/memory-games', function () { return view('memory-game.modes'); })->
 Route::get('/memory-game/easy', [MemoryGameController::class, 'easy'])->name('memory-game.easy')->middleware('auth');
 Route::get('/memory-game/medium', [MemoryGameController::class, 'medium'])->name('memory-game.medium')->middleware('auth');
 Route::get('/memory-game/hard', [MemoryGameController::class, 'hard'])->name('memory-game.hard')->middleware('auth');
-
+Route::post('/memory-game/save-score', [MemoryGameController::class, 'saveScore'])->name('memory-game.save-score')->middleware('auth');
