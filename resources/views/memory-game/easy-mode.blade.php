@@ -5,6 +5,16 @@
             <div id="time">00:00</div>
         </div>
 
+        <div class="score-popup-overlay"></div>
+        <div class="score-popup">
+            <h2>Game Complete!</h2>
+            <p>Your time: <span id="final-time">00:00</span></p>
+            <div class="buttons">
+                <button class="small-pretty" onclick="playAgain()">Play Again</button>
+                <button class="small-pretty" onclick="window.location.href='{{ route('welcome') }}'">Choose Mode</button>
+            </div>
+        </div>
+
         <!-- spēļu laukums 2x2 (4 kārtis - 2 pāri) -->
         <div class="wrapper">
             <ul class="cards">
@@ -122,7 +132,7 @@
             // easy mode: 2 pairs, medium: 6 pairs, hard: 10 pairs
             if (matchedCard === cardsArray.length / 2) {
                     stopTimer();
-                    setTimeout(() => shuffleCard(), 1000);
+                    saveScore();
             }
         } else {
             setTimeout(() => {
@@ -164,4 +174,34 @@
     }
     
     shuffleCard();
+
+    function saveScore() {
+        const elapsed = Math.floor((Date.now() - startTime) / 1000);
+        
+        // Save score to database via AJAX
+        fetch('{{ route("memory-game.save-score") }}', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+            },
+            body: JSON.stringify({
+                time_seconds: elapsed,
+                mode: 'easy'
+            })
+        }).then(() => {
+            // Show popup with final time
+            document.getElementById('final-time').textContent = document.getElementById('time').textContent;
+            document.querySelector('.score-popup-overlay').style.display = 'block';
+            document.querySelector('.score-popup').style.display = 'block';
+        });
+    }
+
+    function playAgain() {
+        // Hide popup
+        document.querySelector('.score-popup-overlay').style.display = 'none';
+        document.querySelector('.score-popup').style.display = 'none';
+        // Reset and shuffle
+        shuffleCard();
+    }
 </script>

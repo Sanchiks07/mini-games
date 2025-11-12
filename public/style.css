@@ -37,8 +37,7 @@ body:has(.modes-container) {
     flex-direction: column;
 }
 
-/* priekš pirmās lapas */
-/* navbar */
+/*----------NAVBAR---------*/
 nav {
     display: flex;
     align-items: center;
@@ -178,7 +177,8 @@ button.small-pretty:hover {
     margin:20px;
     box-shadow: 10px 10px 8px var(--shadow-color);
 }
-/* POGAS */
+
+/*----------POGAS---------*/
 /* poga priekš spēlēm */
 button.learn-more {
   --bg: var(--secondary-color);
@@ -250,6 +250,7 @@ button.small-pretty {
   position: relative;
   transition: 0.15s;
 }
+
 button.small-pretty:hover {
   background: var(--primary-color);
   color: var(--background-color);
@@ -258,8 +259,11 @@ button.small-pretty:hover {
 /*----------MEMORY GAME----------*/
 .memory-container {
     display: grid;
-    grid-template-columns: auto 1fr;
+    grid-template-columns: 1fr 4fr;
+    height:auto;
+    width: 100%;
 }
+
 
 .modes-container {
     display: grid;
