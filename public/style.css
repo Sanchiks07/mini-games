@@ -5,6 +5,20 @@
     padding: 0;
 }
 
+:root {
+  --primary-color: #E89026;     
+  --primary-hover: #B76B2A;     
+  --secondary-color: #FFE4B3;   
+  --background-color: #FFF9F2;  
+  --text-color: #5A3E27;        
+  --border-color: #E5B179;      
+  --shadow-color: rgba(0, 0, 0, 0.1);
+  --card-front: #FFD699;        
+  --card-back: #FFE4B3;         
+  --card-border: #E89026;       
+  --card-text: #5A3E27;         
+}
+
 body, input, button, select, textarea, label {
     font-family: 'Inter', sans-serif;
 }
@@ -30,7 +44,7 @@ nav {
     align-items: center;
     justify-content: space-between;
     padding: 10px;
-    box-shadow: 10px 10px 8px rgb(129, 117, 117);
+    box-shadow: 10px 10px 8px rgba(129, 117, 117, 0.6);
     width: 99%;
     height: 60px;
     border-radius: 10px;
@@ -46,7 +60,77 @@ nav form {
     gap: 10px;
     margin: 0;
 }
-.games{
+
+/* Login layout */
+.login {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    width: 100vw;
+    background: var(--background-color);
+    font-family: "Poppins", sans-serif;
+    color: var(--text-color);
+    overflow: hidden; 
+    gap:10px;
+}
+
+.login-content {
+    transform: scale(1.2);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+}
+
+
+h2 {
+  font-size: 1.8rem;
+  font-weight: 600;
+  color: var(--primary-color);
+  letter-spacing: 1px;
+  font-family: Verdana, Geneva, Tahoma, sans-serif;
+}
+
+.login-form {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  background: var(--secondary-color);
+  padding: 25px;
+  border-radius: 20px;
+  box-shadow: 0 4px 10px var(--shadow-color);
+}
+
+input {
+  width: 220px;
+  height: 35px;
+  border: 2px solid var(--border-color);
+  border-radius: 10px;
+  padding: 5px 10px;
+  outline: none;
+}
+
+input:focus {
+  border-color: var(--primary-color);
+  box-shadow: 0 0 5px var(--primary-color);
+}
+
+button.small-pretty {
+  background: var(--primary-color);
+  color: var(--background-color);
+  border: none;
+  border-radius: 10px;
+  padding: 8px 15px;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+button.small-pretty:hover {
+  background: var(--primary-hover);
+}
+
 /*----------SĀKUMA LAPA---------*/
 .games {
     display: grid;
@@ -89,19 +173,19 @@ nav form {
 }
 .memory-game,
 .typing {
-    border: 1px solid black;
+    border: 1px solid var(--border-color);
     border-radius: 20px;
     margin:20px;
-    box-shadow: 10px 10px 8px rgb(199, 194, 194);
+    box-shadow: 10px 10px 8px var(--shadow-color);
 }
 /* POGAS */
 /* poga priekš spēlēm */
 button.learn-more {
-  --bg: #fff0f0;
-  --shadow-bg: #f9c4d2;
-  --border: #b18597;
-  --shadow-color: #ffe3e2;
-  --text: #382b22;
+  --bg: var(--secondary-color);
+  --shadow-bg: var(--border-color);
+  --border: var(--primary-color);
+  --shadow-color: var(--shadow-color);
+  --text: var(--text-color);
 
   position: relative;
   display: inline-block;
@@ -133,7 +217,7 @@ button.learn-more::before {
 }
 
 button.learn-more:hover {
-  background: #ffe9e9;
+  background: var(--secondary-color);
   transform: translateY(0.25em);
 }
 
@@ -144,19 +228,19 @@ button.learn-more:hover::before {
 
 button.learn-more:active {
   transform: translateY(0.75em);
-  background: #ffe9e9;
+  background: var(--secondary-color);
 }
 
 button.learn-more:active::before {
   transform: translate3d(0,0,-1em);
-  box-shadow: 0 0 0 2px var(--border), 0 0 #ffe3e2;
+  box-shadow: 0 0 0 2px var(--border);
 }
 
 /* Pārējās buttons */
 button.small-pretty {
-  background: #fff0f0;
-  color: #382b22;
-  border: 2px solid #b18597;
+  background: var(--secondary-color);
+  color: var(--text-color);
+  border: 2px solid var(--primary-color);
   border-radius: 0.5em;
   padding: 0.5em 1em;
   font-size: 13px;
@@ -167,34 +251,37 @@ button.small-pretty {
   transition: 0.15s;
 }
 button.small-pretty:hover {
-  transform: translateY(0.15em);
+  background: var(--primary-color);
+  color: var(--background-color);
 }
-
 
 /*----------MEMORY GAME----------*/
 .memory-container {
     display: grid;
     grid-template-columns: auto 1fr;
 }
+
 .modes-container {
     display: grid;
     grid-template-columns: 1fr 1fr 1fr;
     align-items: center;
     height: 100%;
 }
-.easy-mode{
-    grid-column: 1; 
+
+.easy-mode, .medium-mode, .hard-mode {
     position: relative;    
     display: flex;
     align-items: center; 
     justify-content: center;
     overflow: hidden;
 }
+
+/* Keep original images for each mode */
 .easy-mode::before {
     content: "";
     position: absolute;
-    top: 50; 
-    left: 20;
+    top: 20%; 
+    left: 10%;
     width: 80%; 
     height: 65%;
     background-image: url("background-images/easy.png");
@@ -204,19 +291,12 @@ button.small-pretty:hover {
     opacity: 0.9;
     z-index: 0;             
 }
-.medium-mode{
-    grid-column: 2; 
-    position: relative;    
-    display: flex;
-    align-items: center; 
-    justify-content: center;
-    overflow: hidden;
-}
+
 .medium-mode::before {
     content: "";
     position: absolute;
-    top: 50; 
-    left: 20;
+    top: 15%; 
+    left: 15%;
     width: 70%; 
     height: 75%;
     background-image: url("background-images/medium.png");
@@ -226,19 +306,12 @@ button.small-pretty:hover {
     opacity: 0.9;
     z-index: 0;             
 }
-.hard-mode{
-    grid-column: 3; 
-    position: relative;    
-    display: flex;
-    align-items: center; 
-    justify-content: center;
-    overflow: hidden;
-}
+
 .hard-mode::before {
     content: "";
     position: absolute;
-    top: 50; 
-    left: 20;
+    top: 5%; 
+    left: 5%;
     width: 90%; 
     height: 90%;
     background-image: url("background-images/question.png");
@@ -248,14 +321,15 @@ button.small-pretty:hover {
     opacity: 0.9;
     z-index: 0;             
 }
-.mode-card{
+
+.mode-card {
     display: flex;
     align-items: center;
     justify-content: center;
     flex-direction: column;
-    border: 1px solid black;
+    border: 1px solid var(--border-color);
     border-radius: 15px;
-    margin:20px;
+    margin: 20px;
     height: 90%;
     box-sizing: border-box;
 }
@@ -300,10 +374,9 @@ button.small-pretty:hover {
     80% { transform: translateX(8px); }
 }
 
+
 /* card views */
 .card .view {
-    /* Make the card face a bit smaller than its grid cell so cards look smaller
-       across all difficulty modes. Center the face inside the cell. */
     width: 90%;
     height: 90%;
     left: 5%;
@@ -312,53 +385,50 @@ button.small-pretty:hover {
     pointer-events: none;
     position: absolute;
     border-radius: 7px;
-    border: 2px solid #ff6f91;
+    border: 2px solid var(--card-border);
     backface-visibility: hidden;
     transition: transform 0.25s;
     display: flex;
     justify-content: center;
     align-items: center;
-    box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+    box-shadow: 0 3px 10px var(--shadow-color);
 }
 
-/* fron view (?) */
+/* front view */
 .card .front-view {
-    background: #ffccd5;
+    background: var(--card-front);
     transform: rotateY(0deg);
 }
 
 .card .front-view span {
-    /* Slightly reduced font to match the smaller card faces */
     font-size: 36px;
-    color: #ff1744;
+    color: var(--card-text);
 }
 
-/* back view (image) */
+/* back view */
 .card .back-view {
     transform: rotateY(180deg);
-    background-color: #ffe6eb;
+    background-color: var(--card-back);
     display: flex;
     justify-content: center;
     align-items: center;
 }
 
 .card.flip .front-view {
-    transform: rotateY(-180deg); /* front flips backwards */
+    transform: rotateY(-180deg);
 }
 
 .card.flip .back-view {
-    transform: rotateY(0deg); /* back rotates to show */
+    transform: rotateY(0deg);
 }
 
 .card img {
-    /* Make images a touch smaller to fit the reduced face size */
     max-width: 75%;
     height: auto;
     display: block;
 }
 
-/*----------DYNAMIC GRID BASED ON NUMBER OF CARDS----------*/
-/* Easy mode: 4 cards = 2x2 */
+/* Dynamic grid based on number of cards */
 .cards:has(.card:nth-child(4)) {
     grid-template-columns: repeat(2, 1fr);
     grid-template-rows: repeat(2, 1fr);
@@ -366,7 +436,6 @@ button.small-pretty:hover {
     height: 400px;
 }
 
-/* Medium mode: 12 cards = 3x4 */
 .cards:has(.card:nth-child(12)) {
     grid-template-columns: repeat(4, 1fr);
     grid-template-rows: repeat(3, 1fr);
@@ -374,7 +443,6 @@ button.small-pretty:hover {
     height: 450px;
 }
 
-/* Hard mode: 20 cards = 4x5 */
 .cards:has(.card:nth-child(20)) {
     grid-template-columns: repeat(5, 1fr);
     grid-template-rows: repeat(4, 1fr);
