@@ -11,7 +11,7 @@
             <p>Your time: <span id="final-time">00:00</span></p>
             <div class="buttons">
                 <button class="small-pretty" onclick="playAgain()">Play Again</button>
-                <button class="small-pretty" onclick="window.location.href='{{ route('welcome') }}'">Choose Mode</button>
+                <button class="small-pretty" onclick="window.location.href='{{ route('modes') }}'">Choose Mode</button>
             </div>
         </div>
         
@@ -304,31 +304,56 @@
 
     function saveScore() {
         const elapsed = Math.floor((Date.now() - startTime) / 1000);
-        
-        // Save score to database via AJAX
-        fetch('{{ route("memory-game.save-score") }}', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
-            },
-            body: JSON.stringify({
-                time_seconds: elapsed,
-                mode: 'hard'
-            })
-        }).then(() => {
-            // Show popup with final time
-            document.getElementById('final-time').textContent = document.getElementById('time').textContent;
-            document.querySelector('.score-popup-overlay').style.display = 'block';
-            document.querySelector('.score-popup').style.display = 'block';
-        });
+        // Save score to database via AJAX (graceful if CSRF meta is missing)
+        const tokenMeta = document.querySelector('meta[name="csrf-token"]');
+        const csrfToken = tokenMeta ? tokenMeta.getAttribute('content') : null;
+        if (!csrfToken) {
+            console.warn('CSRF token meta tag not found. Proceeding without CSRF header.');
+        }
+
+        (async () => {
+            try {
+                await fetch('{{ route("memory-game.save-score") }}', {
+                    method: 'POST',
+                    headers: Object.assign({ 'Content-Type': 'application/json' }, csrfToken ? { 'X-CSRF-TOKEN': csrfToken } : {}),
+                    body: JSON.stringify({
+                        time_seconds: elapsed,
+                        mode: 'hard'
+                    })
+                });
+            } catch (err) {
+                console.error('Failed to save score:', err);
+            } finally {
+                // Show popup with final time regardless of save result
+                document.getElementById('final-time').textContent = document.getElementById('time').textContent;
+                const overlay = document.querySelector('.score-popup-overlay');
+                const popup = document.querySelector('.score-popup');
+                if (overlay) overlay.style.display = 'block';
+                if (popup) {
+                    popup.style.display = 'block';
+                    popup.classList.add('show');
+                }
+            }
+        })();
     }
 
     function playAgain() {
         // Hide popup
-        document.querySelector('.score-popup-overlay').style.display = 'none';
-        document.querySelector('.score-popup').style.display = 'none';
+        const overlay = document.querySelector('.score-popup-overlay');
+        const popup = document.querySelector('.score-popup');
+        if (overlay) overlay.style.display = 'none';
+        if (popup) {
+            popup.style.display = 'none';
+            popup.classList.remove('show');
+        }
         // Reset and shuffle
         shuffleCard();
     }
+
+    // Allow clicking the overlay to close the popup
+    document.addEventListener('click', (e) => {
+        const overlay = document.querySelector('.score-popup-overlay');
+        if (!overlay) return;
+        if (e.target === overlay) playAgain();
+    });
 </script>

@@ -13,9 +13,9 @@ return new class extends Migration
     {
         Schema::create('memory_scores', function (Blueprint $table) {
             $table->id();
-            $table->integer('time_seconds');
+            $table->foreignId('user_id')->constrained()->onDelete('cascade');
             $table->enum('mode', ['easy', 'medium', 'hard']);
-            $table->foreignId('user_id')->constrained('users')->onDelete('cascade');
+            $table->integer('time_seconds');
             $table->timestamps();
         });
     }

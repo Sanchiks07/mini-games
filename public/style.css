@@ -18,6 +18,7 @@ body:has(.games) {
     display:flex;
     flex-direction: column;
 }
+
 body:has(.modes-container) {
     display:flex;
     flex-direction: column;
@@ -53,6 +54,7 @@ nav form {
     height: 100%;
     padding: 10px;
 }
+
 .memory-game {
     grid-column: 1; 
     position: relative;    
@@ -61,6 +63,7 @@ nav form {
     justify-content: center;
     overflow: hidden;
 }
+
 .memory-game::before {
     content: "";
     position: absolute;
@@ -75,6 +78,7 @@ nav form {
     opacity: 0.9;
     z-index: 0;             
 }
+
 .memory-game > * {
     position: relative;
     z-index: 1;             
@@ -86,6 +90,7 @@ nav form {
     align-items: center; 
     justify-content: center;
 }
+
 .memory-game, .typing {
     border: 1px solid black;
     border-radius: 20px;
@@ -173,17 +178,20 @@ button.small-pretty:hover {
 /*----------MEMORY GAME----------*/
 .memory-container {
     display: grid;
-    grid-template-columns: 1fr 4fr;
-    height:auto;
-    width: 100%;
+    grid-template-columns: 1fr 3fr;
+    min-height: calc(100vh - 60px);
+    width: 100vw;
+    box-sizing: border-box;
+    align-items: center;
 }
 
 .modes-container {
     display: grid;
-    grid-template-columns: 1fr 1fr 1fr;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
     align-items: center;
     height: 100%;
 }
+
 .easy-mode{
     grid-column: 1; 
     position: relative;    
@@ -192,6 +200,7 @@ button.small-pretty:hover {
     justify-content: center;
     overflow: hidden;
 }
+
 .easy-mode::before {
     content: "";
     position: absolute;
@@ -206,6 +215,7 @@ button.small-pretty:hover {
     opacity: 0.9;
     z-index: 0;             
 }
+
 .medium-mode{
     grid-column: 2; 
     position: relative;    
@@ -214,6 +224,7 @@ button.small-pretty:hover {
     justify-content: center;
     overflow: hidden;
 }
+
 .medium-mode::before {
     content: "";
     position: absolute;
@@ -228,6 +239,7 @@ button.small-pretty:hover {
     opacity: 0.9;
     z-index: 0;             
 }
+
 .hard-mode{
     grid-column: 3; 
     position: relative;    
@@ -236,6 +248,7 @@ button.small-pretty:hover {
     justify-content: center;
     overflow: hidden;
 }
+
 .hard-mode::before {
     content: "";
     position: absolute;
@@ -274,7 +287,7 @@ button.small-pretty:hover {
 
 .cards {
     display: grid;
-    gap: 10px;
+    gap: 3px;
     list-style: none;
     padding: 0;
     margin: 0;
@@ -367,6 +380,34 @@ button.small-pretty:hover {
     justify-content: center;
     color: #ff6f91;
     width: 100%;
+    font-size: 24px;
+}
+
+/* highscore */
+.highscore-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    min-height: calc(100% - 60px);
+}
+
+.highscore-table, th, td {
+    border-collapse: collapse;
+    border: 1px solid;
+    width: 600px;
+    height: auto;
+    text-align: center;
+    padding: 8px;
+}
+
+.highscore-select {
+    font-size: 16px;
+    padding: 8px;
+    border-radius: 5px;
+    border: 1px solid black;
+    width: 300px;
 }
 
 /*----------DYNAMIC GRID BASED ON NUMBER OF CARDS----------*/
@@ -390,6 +431,61 @@ button.small-pretty:hover {
 .cards:has(.card:nth-child(20)) {
     grid-template-columns: repeat(5, 1fr);
     grid-template-rows: repeat(4, 1fr);
-    width: 800px;
-    height: 640px;
+    width: 760px;
+    height: 600px;
+}
+
+/*----------SCORE POPUP & OVERLAY----------*/
+/* Hidden by default. Shown by JS when the game ends via inline style (display:block). */
+.score-popup-overlay {
+    position: fixed;
+    inset: 0; /* top:0; right:0; bottom:0; left:0; */
+    display: none;
+    background: rgba(0, 0, 0, 0.45);
+    backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
+    z-index: 1000;
+}
+
+.score-popup {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    display: none;
+    z-index: 1001;
+    background: #ffffff;
+    padding: 1.25rem 1.5rem;
+    border-radius: 12px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.25);
+    min-width: 260px;
+    max-width: 90vw;
+    text-align: center;
+}
+
+.score-popup h2 {
+    margin-bottom: 0.5rem;
+    color: #ff6f91;
+}
+
+.score-popup p {
+    margin-bottom: 1rem;
+    color: #333;
+}
+
+.score-popup .buttons {
+    display: flex;
+    gap: 0.5rem;
+    justify-content: center;
+    align-items: center;
+}
+
+/* A subtle entrance animation when we switch to display:block */
+@keyframes popup-enter {
+    from { transform: translate(-50%, -45%) scale(0.98); opacity: 0; }
+    to   { transform: translate(-50%, -50%) scale(1); opacity: 1; }
+}
+
+.score-popup.show {
+    animation: popup-enter 220ms ease-out;
 }

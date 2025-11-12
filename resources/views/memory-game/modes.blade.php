@@ -14,5 +14,10 @@
         <div class="mode-card hard-mode">
             <button class="small-pretty" type="button" onclick="window.location='{{ route('memory-game.hard') }}'">Hard mode</button>
         </div>
+
+        <!-- highscore board -->
+         <div class="mode-card">
+            <button class="small-pretty" type="button" onclick="window.location='{{ route('memory-game.highscore') }}'">Highscores</button>
+        </div>
     </div>
 </x-layout>

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\MemoryScore;
 use Illuminate\Http\Request;
 
 class MemoryGameController extends Controller
@@ -16,5 +17,30 @@ class MemoryGameController extends Controller
 
     public function hard() {
         return view('memory-game.hard-mode');
+    }
+
+    public function highscore() {
+        $highscores = MemoryScore::with('user')->orderBy('time_seconds')->get();
+        return view('memory-game.highscore', compact('highscores'));
+    }
+
+    public function saveScore(Request $request)
+    {
+        $validated = $request->validate([
+            'mode' => 'required|in:easy,medium,hard',
+            'time_seconds' => 'required|integer|min:0',
+        ]);
+
+        $score = MemoryScore::create([
+            'user_id' => auth()->id(),
+            'mode' => $validated['mode'],
+            'time_seconds' => $validated['time_seconds'],
+        ]);
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Score saved successfully',
+            'score' => $score
+        ]);
     }
 }
