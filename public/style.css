@@ -438,7 +438,18 @@ button.small-pretty:hover {
     display: block;
 }
 
-/* Dynamic grid based on number of cards */
+.timer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    color: #ff6f91;
+    width: 100%;
+    font-size: 24px;
+}
+
+/*----------DYNAMIC GRID BASED ON NUMBER OF CARDS----------*/
+/* Easy mode: 4 cards = 2x2 */
 .cards:has(.card:nth-child(4)) {
     grid-template-columns: repeat(2, 1fr);
     grid-template-rows: repeat(2, 1fr);
@@ -446,6 +457,7 @@ button.small-pretty:hover {
     height: 400px;
 }
 
+/* Medium mode: 12 cards = 3x4 */
 .cards:has(.card:nth-child(12)) {
     grid-template-columns: repeat(4, 1fr);
     grid-template-rows: repeat(3, 1fr);
@@ -453,9 +465,84 @@ button.small-pretty:hover {
     height: 450px;
 }
 
+/* Hard mode: 20 cards = 4x5 */
 .cards:has(.card:nth-child(20)) {
     grid-template-columns: repeat(5, 1fr);
     grid-template-rows: repeat(4, 1fr);
     width: 800px;
     height: 640px;
+}
+
+/* ---------- SCORE POPUP & OVERLAY (priekš game ending) ---------- */
+/* Hidden by default; shown by JS when the game ends */
+.score-popup-overlay {
+    position: fixed;
+    inset: 0; /* top:0; right:0; bottom:0; left:0; */
+    display: none;
+    background: rgba(0, 0, 0, 0.45);
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
+    z-index: 1000;
+}
+
+.score-popup {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    display: none;
+    z-index: 1001;
+    background: #ffffff;
+    padding: 1.25rem 1.5rem;
+    border-radius: 12px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.25);
+    min-width: 260px;
+    max-width: 90vw;
+    text-align: center;
+}
+
+.score-popup h2 {
+    margin-bottom: 0.5rem;
+    color: var(--primary-color);
+}
+
+.score-popup p {
+    margin-bottom: 1rem;
+    color: #333;
+}
+
+/* Entrance animation for the popup */
+@keyframes popup-enter {
+    from { transform: translate(-50%, -45%) scale(0.98); opacity: 0; }
+    to   { transform: translate(-50%, -50%) scale(1); opacity: 1; }
+}
+
+.score-popup.show {
+    animation: popup-enter 220ms ease-out;
+}
+
+/* ---------- HIGHSCORE ---------- */
+.highscore-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    min-height: calc(100vh - 60px);
+}
+
+.highscore-table, th, td {
+    width: 600px;
+    border-collapse: collapse;
+    border: solid 1px black;
+    padding: 8px;
+    text-align: center;
+}
+
+.highscore-select {
+    width: 300px;
+    padding: 8px;
+    border: solid 1px black;
+    border-radius: 5px;
+    font-size: 16px;
 }
