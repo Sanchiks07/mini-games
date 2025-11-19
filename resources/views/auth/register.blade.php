@@ -12,14 +12,14 @@
         @endif
         <form action="/register" method="POST" class="login-form">
             @csrf
-            <input name="name" id="name" type="text" placeholder="Name..." value="{{ old("name") }}"/>
-            <input name="email" id="email" type="email" placeholder="E-mail..." value="{{ old("email") }}"/>
+            <input name="name" id="name" type="text" placeholder="Name..." value="{{ old('name') }}"/>
+            <input name="email" id="email" type="email" placeholder="E-mail..." value="{{ old('email') }}"/>
             <input name="password" id="password" type="password" placeholder="Password..."/>
             <input name="password_confirmation" id="password_confirmation" type="password" placeholder="Password confirmation..."/>
-            <button class="small-pretty">Register</button>
+            <button class="login-small-pretty">Register</button>
         </form>
         <p>Already have an account?</p>
-        <p><a href="{{ route('login.form') }}">Login</a></p>
+        <a href="{{ route('login.form') }}">Login</a>
     </div>
     
 </x-layout>

@@ -12,6 +12,7 @@
             <div class="buttons">
                 <button class="small-pretty" onclick="playAgain()">Play Again</button>
                 <button class="small-pretty" onclick="window.location.href='{{ route('modes') }}'">Choose Mode</button>
+                <button class="small-pretty" onclick="window.location.href='{{ route('memory-game.highscore') }}'">View Highscores</button>
             </div>
         </div>
         
