@@ -1,25 +1,46 @@
 <x-layout>
-    <div class="conteiner">
-        <div class="typing_bar"></div>
-
+    <div class="container">
+        <div class="typing_bar">
+            <!-- <div id="wordsOrQuotes">
+                <div onclick="wordsOrQuotes = 0;">words</div>
+                <div onclick="wordsOrQuotes = 0;">quote</div>
+            </div> -->
+            <div id="difficulty_level">
+                <div id="difficulty_0" onclick="difficultyLevel(0)">Easy</div>
+                <div id="difficulty_1" onclick="difficultyLevel(1)">Medium</div>
+                <div id="difficulty_2" onclick="difficultyLevel(2)">Hard</div>
+                <div id="difficulty_3" onclick="difficultyLevel(3)">HardCore</div>
+            </div>
+            <div id="scoreBordButton" onclick="window.location='{{ route('typingScore') }}'">Score List</div>
+        </div>
         <div class="input">
-            <div id="difficultyButton" onclick="difficultyLevel()">Easy</div>
-            <input autocomplete="off" type="text" id="typing_input">
+            <input type="text" id="typing_input" autocomplete="off" tabindex="-1" style="opacity:0;position:absolute;left:0;top:0;width:1px;height:1px;">
             <p id="typing_text"></p>
         </div>
-
         <div id="outputResult" style="display:none;">
-            <div>
-                <h1>Resultāti</h1>
-                <div id="outputUserName"></div>
-                <div id="outputTime"></div>
-                <div id="outputAcc"></div>
-                <div id="outputWPM"></div>
-                <div id="outputIncorrectVord"></div>
-            </div>
+            <h1>Resultāti</h1>
+            <div id="outputUserName"></div>
+            <div id="outputTime"></div>
+            <div id="outputAcc"></div>
+            <div id="outputWPM"></div>
+            <div id="outputIncorrectVord"></div>
         </div>
     </div>
 </x-layout>
+
+<style>
+.container { width: 700px; margin: 50px auto; font-family: sans-serif; }
+.typing_bar { display: flex; justify-content: space-between; margin-bottom: 15px; }
+#difficulty_level div { display: inline-block; padding: 5px 10px; margin-right: 5px; cursor: pointer; border: 1px solid #ccc; }
+.selected_difficulty { background: #0f62fe; color: white; }
+#typing_text { min-height: 30px; }
+#typing_text span { font-size: 18px; }
+.correct { color: green; }
+.incorrect { color: red; }
+.space-incorrect { background: red; }
+.active { text-decoration: underline; }
+#outputResult div { margin: 5px 0; }
+</style>
 
 <script>
     const inpField = document.querySelector("#typing_input");
@@ -30,36 +51,39 @@
     let incorrectLetters = 0;
     let incorrectVord = 0;
     let difficultyIndex = 0;
+    let oldDifficultyLevel = 0;
     let wordsNumber = 50;
+    let wordsOrQuotes = 0;
+
     let paragraph = "";
     let lastValue = "";
 
     let words = [];
     let wordStatus = []; 
-
     const difficulties = [
-        { id: 1, name: "Easy", words: 50 },
-        { id: 2, name: "Medium", words: 100 },
-        { id: 3, name: "Hard", words: 150 },
-        { id: 4, name: "HardCore", words: 300 }
+        {name: "easy", words: 5 },
+        {name: "medium", words: 100 },
+        {name: "hard", words: 150 },
+        {name: "hardCore", words: 300 }
     ];
 
+    window.userName = "{{ Auth::user()->name ?? '' }}";
     const sentences = @json($sentences);
 
-    makeParagraphs();
-    loadParagraph();
+    difficultyLevel(0);
 
     inpField.addEventListener("input", initTyping);
     inpField.addEventListener("keydown", checkWord);
 
-
-    function difficultyLevel() {
-        difficultyIndex++;
-        if (difficultyIndex >= difficulties.length) difficultyIndex = 0;
-
-        const selected = difficulties[difficultyIndex];
+    // ---------- funkcijas ---------- //
+    function difficultyLevel(valueId) {
+        const selected = difficulties[valueId];
         wordsNumber = selected.words;
-        document.getElementById("difficultyButton").innerText = selected.name;
+
+        document.querySelector("#difficulty_" + oldDifficultyLevel).classList.remove("selected_difficulty");
+        document.querySelector("#difficulty_" + valueId).classList.add("selected_difficulty");
+
+        oldDifficultyLevel = valueId;
 
         makeParagraphs();
         loadParagraph();
@@ -87,45 +111,38 @@
         const characters = typingText.querySelectorAll("span");
         const currentValue = inpField.value;
 
-        if (currentValue.length < lastValue.length) {
-            characters.forEach(span => span.classList.remove("correct", "incorrect", "active"));
-            charIndex = currentValue.length;
+        characters.forEach(span => span.classList.remove("active"));
 
-            for (let i = 0; i < charIndex; i++) {
-                if (characters[i].innerText === currentValue[i]) characters[i].classList.add("correct");
+        charIndex = currentValue.length;
+        for (let i = 0; i < characters.length; i++) {
+            const span = characters[i];
+            const typedChar = currentValue[i];
+
+            span.classList.remove("correct","incorrect","space-incorrect");
+
+            if (typedChar === undefined) continue;
+
+            if (typedChar === span.innerText) {
+                span.classList.add("correct");
+            } else {
+                if (span.innerText === " " && typedChar !== " ") {
+                    span.classList.add("space-incorrect");
+                } else {
+                    span.classList.add("incorrect");
+                }
             }
-
-            if (charIndex < characters.length) characters[charIndex].classList.add("active");
-            lastValue = currentValue;
-            return;
         }
 
-        if (charIndex >= characters.length) return;
+        if (characters[charIndex]) characters[charIndex].classList.add("active");
 
-        const typingChar = currentValue[charIndex];
+        if (startTime === 0 && currentValue.length > 0) startTime = Date.now();
 
-        if (typingChar === characters[charIndex].innerText) {
-            characters[charIndex].classList.add("correct");
-        } else {
-            characters[charIndex].classList.add("incorrect");
-            incorrectLetters++;
-        }
-
-        characters[charIndex].classList.remove("active");
-        charIndex++;
+        lastValue = currentValue;
 
         if (charIndex === characters.length) {
             inpField.blur();
-
             resultValues();
-
-            return;
         }
-
-        characters[charIndex].classList.add("active");
-
-        if (startTime === 0) startTime = Date.now();
-        lastValue = currentValue;
     }
     function checkWord(e) {
         if (e.key === " " || e.key === "Enter") {
@@ -178,7 +195,7 @@
 
         document.getElementById("outputResult").style.display = "block";
 
-        fetch("/typing", {
+        fetch("/typing-game", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
@@ -190,7 +207,7 @@
                 wpm: WPM,
                 incorrect_words: incorrectVord,
                 incorrect_letters: incorrectLetters,
-                difficulty: document.getElementById("difficultyButton").innerText
+                difficulty: difficulties[oldDifficultyLevel].name
             })
         });
     }

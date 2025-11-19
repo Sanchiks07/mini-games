@@ -27,5 +27,8 @@ Route::get('/memory-game/highscore', [MemoryGameController::class, 'highscore'])
 // saves time score
 Route::post('/memory-game/save-score', [MemoryGameController::class, 'saveScore'])->name('memory-game.save-score')->middleware('auth');
 
-// typing game
-Route::get('/typing', [TypingGameController::class, 'index']);
+// typing
+Route::get('/typing-game', [TypingGameController::class, 'index'])->name('typing')->middleware('auth');
+Route::post('/typing-game', [TypingGameController::class, 'store'])->middleware('auth');
+
+Route::get('/typing-game/score', [TypingGameController::class, 'score'])->name('typingScore')->middleware('auth');

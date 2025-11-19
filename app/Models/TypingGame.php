@@ -13,4 +13,8 @@ class TypingGame extends Model
         'sentence',
         'number_of_words',
     ];
+
+    public function user() {
+        return $this->belongsTo(User::class);
+    }
 }

@@ -11,12 +11,12 @@ return new class extends Migration
         Schema::create('typing_results', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
-            $table->float('time_seconds');
+            $table->decimal('time_seconds');
             $table->integer('accuracy');
             $table->integer('wpm');
             $table->integer('incorrect_words')->default(0);
             $table->integer('incorrect_letters')->default(0);
-            $table->string('difficulty')->default('Easy');
+            $table->string('difficulty')->default('easy');
             $table->timestamps();
         });
     }

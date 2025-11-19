@@ -3,8 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
-
-class TypingResult extends Model
+class TypingResults extends Model
 {
     protected $fillable = [
         'user_id',
@@ -13,6 +12,10 @@ class TypingResult extends Model
         'wpm',
         'incorrect_words',
         'incorrect_letters',
-        'difficulty'
+        'difficulty',
     ];
+
+    public function user() {
+        return $this->belongsTo(User::class);
+    }
 }
