@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\RegisteredUserController;
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
+use App\Http\Controllers\TypingGameController;
 use App\Http\Controllers\MemoryGameController;
 use App\Http\Middleware;
 
@@ -25,3 +26,6 @@ Route::get('/memory-game/hard', [MemoryGameController::class, 'hard'])->name('me
 Route::get('/memory-game/highscore', [MemoryGameController::class, 'highscore'])->name('memory-game.highscore')->middleware('auth');
 // saves time score
 Route::post('/memory-game/save-score', [MemoryGameController::class, 'saveScore'])->name('memory-game.save-score')->middleware('auth');
+
+// typing game
+Route::get('/typing', [TypingGameController::class, 'index']);
