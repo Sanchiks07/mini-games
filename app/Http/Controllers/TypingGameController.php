@@ -13,8 +13,8 @@ class TypingGameController extends Controller
         return view('typing-game.typing', compact('sentences'));
     }
     public function score() {
-        $highscores = \App\Models\TypingResults::select('user_id', 'difficulty')->selectRaw('MIN(time_seconds) AS time_seconds')->with('user')->groupBy('user_id', 'difficulty')->orderBy('difficulty')->orderBy('time_seconds')->get();
-
+        $highscores = \App\Models\TypingResults::with('user')->orderBy('difficulty')->orderBy('time_seconds')->get();
+        
         return view('typing-game.typingScore', compact('highscores'));
     }
     public function store(Request $request)

@@ -48,7 +48,8 @@
 
                     if (mode === 'all' || rowDifficulty === mode.toLowerCase()) {
                         row.style.display = '';
-                        rankCell.textContent = rank++;
+                        const rankCell = row.querySelector('td');
+                        if (rankCell) rankCell.textContent = rank++;
                     } else {
                         row.style.display = 'none';
                     }

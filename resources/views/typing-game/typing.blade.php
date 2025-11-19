@@ -171,6 +171,22 @@
         }
     }
     function resultValues() {
+        let typedWords = inpField.value.trim().split(/\s+/);
+        let lastIndex = typedWords.length - 1;
+        let lastTypedWord = typedWords[lastIndex];
+        let lastRealWord = words[lastIndex];
+
+        if (lastTypedWord !== lastRealWord) {
+            if (wordStatus[lastIndex] !== 'incorrect') {
+                incorrectVord++;
+                wordStatus[lastIndex] = 'incorrect';
+            }
+        } else {
+            if (wordStatus[lastIndex] !== 'correct') {
+                wordStatus[lastIndex] = 'correct';
+            }
+        }
+
         let endTime = Date.now();
 
         let timeInMin = (endTime - startTime) / 60000;
