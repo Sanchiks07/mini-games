@@ -6,17 +6,20 @@
 }
 
 :root {
-  --primary-color: #E89026;     
-  --primary-hover: #B76B2A;     
-  --secondary-color: #FFE4B3;   
-  --background-color: #FFF9F2;  
-  --text-color: #5A3E27;        
-  --border-color: #E5B179;      
-  --shadow-color: rgba(0, 0, 0, 0.1);
-  --card-front: #FFD699;        
-  --card-back: #FFE4B3;         
-  --card-border: #E89026;       
-  --card-text: #5A3E27;         
+    --primary-color: #E89026;     
+    --primary-hover: #B76B2A;     
+    --secondary-color: #FFE4B3;   
+    --background-color: #FFF9F2;  
+    --text-color: #5A3E27;        
+    --border-color: #E5B179;      
+    --shadow-color: rgba(0, 0, 0, 0.1);
+    --card-front: #FFD699;        
+    --card-back: #FFE4B3;         
+    --card-border: #E89026;       
+    --card-text: #5A3E27;
+    --memory-table-head-bg: #ffe5c6;
+    --memory-table-body-bg: #FFF9F2;
+    --memory-table-hover: #fff0de;
 }
 
 body, input, button, select, textarea, label {
@@ -271,80 +274,6 @@ button.small-pretty:hover {
     padding: 20px 0;
 }
 
-
-.modes-container {
-    display: grid;
-    grid-template-columns: 1fr 1fr 1fr 1fr;
-    align-items: center;
-    height: 100%;
-}
-
-.easy-mode, .medium-mode, .hard-mode {
-    position: relative;    
-    display: flex;
-    align-items: center; 
-    justify-content: center;
-    overflow: hidden;
-}
-
-/* Keep original images for each mode */
-.easy-mode::before {
-    content: "";
-    position: absolute;
-    top: 20%; 
-    left: 10%;
-    width: 80%; 
-    height: 65%;
-    background-image: url("background-images/easy.png");
-    background-position: center;
-    background-size: cover;
-    filter: blur(3px);
-    opacity: 0.9;
-    z-index: 0;             
-}
-
-.medium-mode::before {
-    content: "";
-    position: absolute;
-    top: 15%; 
-    left: 15%;
-    width: 70%; 
-    height: 75%;
-    background-image: url("background-images/medium.png");
-    background-position: center;
-    background-size: cover;
-    filter: blur(3px);
-    opacity: 0.9;
-    z-index: 0;             
-}
-
-.hard-mode::before {
-    content: "";
-    position: absolute;
-    top: 5%; 
-    left: 5%;
-    width: 90%; 
-    height: 90%;
-    background-image: url("background-images/question.png");
-    background-position: center;
-    background-size: cover;
-    filter: blur(3px);
-    opacity: 0.9;
-    z-index: 0;             
-}
-
-.mode-card {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-direction: column;
-    border: 1px solid var(--border-color);
-    border-radius: 15px;
-    margin: 20px;
-    height: 90%;
-    box-sizing: border-box;
-}
-
 .wrapper {
     display: flex;
     justify-content: center;
@@ -384,7 +313,6 @@ button.small-pretty:hover {
     60% { transform: translateX(-8px); }
     80% { transform: translateX(8px); }
 }
-
 
 /* card views */
 .card .view {
@@ -449,6 +377,80 @@ button.small-pretty:hover {
     font-size: 24px;
 }
 
+/* priekš page kur tu izvēlies gamemode */
+.modes-container {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+    align-items: center;
+    height: 100%;
+}
+
+.easy-mode, .medium-mode, .hard-mode {
+    position: relative;    
+    display: flex;
+    align-items: center; 
+    justify-content: center;
+    overflow: hidden;
+}
+
+/* Background images priekš katra mode */
+.easy-mode::before {
+    content: "";
+    position: absolute;
+    top: 20%; 
+    left: 10%;
+    width: 80%; 
+    height: 65%;
+    background-image: url("background-images/easy.png");
+    background-position: center;
+    background-size: cover;
+    filter: blur(3px);
+    opacity: 0.9;
+    z-index: 0;             
+}
+
+.medium-mode::before {
+    content: "";
+    position: absolute;
+    top: 15%; 
+    left: 15%;
+    width: 70%; 
+    height: 75%;
+    background-image: url("background-images/medium.png");
+    background-position: center;
+    background-size: cover;
+    filter: blur(3px);
+    opacity: 0.9;
+    z-index: 0;             
+}
+
+.hard-mode::before {
+    content: "";
+    position: absolute;
+    top: 5%; 
+    left: 5%;
+    width: 90%; 
+    height: 90%;
+    background-image: url("background-images/question.png");
+    background-position: center;
+    background-size: cover;
+    filter: blur(3px);
+    opacity: 0.9;
+    z-index: 0;             
+}
+
+.mode-card {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    border: 1px solid var(--border-color);
+    border-radius: 15px;
+    margin: 20px;
+    height: 90%;
+    box-sizing: border-box;
+}
+
 /*----------DYNAMIC GRID BASED ON NUMBER OF CARDS----------*/
 /* Easy mode: 4 cards = 2x2 */
 .cards:has(.card:nth-child(4)) {
@@ -475,7 +477,6 @@ button.small-pretty:hover {
 }
 
 /* ---------- SCORE POPUP & OVERLAY (priekš game ending) ---------- */
-/* Hidden by default; shown by JS when the game ends */
 .score-popup-overlay {
     position: fixed;
     inset: 0;
@@ -532,12 +533,25 @@ button.small-pretty:hover {
     min-height: calc(100vh - 60px);
 }
 
-.highscore-table, th, td {
+.highscore-table, .highscore-table th, .highscore-table td {
     width: 600px;
     border-collapse: collapse;
     border: solid 1px black;
     padding: 8px;
     text-align: center;
+}
+
+.highscore-table thead th {
+  background-color: var(--memory-table-head-bg);
+}
+
+.highscore-table tr {
+  background-color: var(--memory-table-body-bg);
+}
+
+.highscore-table tbody tr:hover {
+    background-color: var(--memory-table-hover);
+    transition: background-color 150ms ease-in-out;
 }
 
 .highscore-select {
@@ -547,3 +561,5 @@ button.small-pretty:hover {
     border-radius: 5px;
     font-size: 16px;
 }
+
+/* ---------- RESPONSIVE DESIGN (MOBILE) ---------- */

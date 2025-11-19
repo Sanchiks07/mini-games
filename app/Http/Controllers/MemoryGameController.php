@@ -20,7 +20,14 @@ class MemoryGameController extends Controller
     }
 
     public function highscore() {
-        $highscores = MemoryScore::with('user')->orderBy('time_seconds')->get();
+        $highscores = MemoryScore::select('user_id', 'mode')
+            ->selectRaw('MIN(time_seconds) as time_seconds')
+            ->with('user')
+            ->groupBy('user_id', 'mode')
+            ->orderBy('mode')
+            ->orderBy('time_seconds')
+            ->get();
+
         return view('memory-game.highscore', compact('highscores'));
     }
 

@@ -12,12 +12,16 @@ class MemoryScoreController extends Controller
      */
     public function index()
     {
-        $scores = MemoryScore::with('user')
-            ->orderBy('time_seconds', 'asc')
-            ->get()
-            ->groupBy('mode');
+        // Fetch only each user's fastest time for every mode
+        $highscores = MemoryScore::select('user_id', 'mode')
+            ->selectRaw('MIN(time_seconds) as time_seconds')
+            ->with('user')
+            ->groupBy('user_id', 'mode')
+            ->orderBy('mode')
+            ->orderBy('time_seconds')
+            ->get();
 
-        return view('memory-scores.index', compact('scores'));
+        return view('memory-scores.index', compact('highscores'));
     }
 
     /**
