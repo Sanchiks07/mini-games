@@ -465,7 +465,7 @@ button.small-pretty:hover {
     left: 5%;
     width: 90%; 
     height: 90%;
-    background-image: url("background-images/question.png");
+    background-image: url("background-images/highscore-img.png");
     background-position: center;
     background-size: cover;
     filter: blur(3px);
