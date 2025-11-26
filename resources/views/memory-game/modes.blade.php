@@ -16,7 +16,7 @@
         </div>
 
         <!-- highscore board -->
-         <div class="mode-card">
+         <div class="mode-card highscore" >
             <button class="small-pretty" type="button" onclick="window.location='{{ route('memory-game.highscore') }}'">Highscores</button>
         </div>
     </div>

@@ -29,10 +29,10 @@
 </x-layout>
 
 <style>
-.container { width: 700px; margin: 50px auto; font-family: sans-serif; }
+.container { width: 700px; margin: 50px auto; font-family: sans-serif; border: 2px solid #ccc; padding: 20px; border-radius: 10px; background: #ffe5c6; }
 .typing_bar { display: flex; justify-content: space-between; margin-bottom: 15px; }
-#difficulty_level div { display: inline-block; padding: 5px 10px; margin-right: 5px; cursor: pointer; border: 1px solid #ccc; }
-.selected_difficulty { background: #0f62fe; color: white; }
+#difficulty_level div { display: inline-block; padding: 5px 10px; margin-right: 5px; cursor: pointer; border: solid 2px #E89026; border-radius: 5px }
+.selected_difficulty { background: #E89026; color: white;}
 #typing_text { min-height: 30px; }
 #typing_text span { font-size: 18px; }
 .correct { color: green; }
