@@ -1,4 +1,8 @@
 <x-layout>
+    <x-slot:title>
+        Login
+    </x-slot>
+
     <div class="login">
         <h2>Login</h2>
         <form action="/login" method="POST" class="login-form">

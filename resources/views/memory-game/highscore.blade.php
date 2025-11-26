@@ -1,4 +1,8 @@
 <x-layout>
+    <x-slot:title>
+        Memory Game Highscores
+    </x-slot>
+
     <div class="highscore-container">
         <h1>Memory Game Highscores</h1>
         <br>

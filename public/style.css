@@ -599,6 +599,11 @@ select {
     cursor: pointer;
 }
 
+/* ---------- TYPING GAME ---------- */
+#scoreBordButton {
+    cursor: pointer;
+}
+
 /* ---------- RESPONSIVE DESIGN ---------- */
 /* Tablets */
 @media (max-width: 900px) {

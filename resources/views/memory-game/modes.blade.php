@@ -1,4 +1,8 @@
 <x-layout>
+    <x-slot:title>
+        Memory Game - Choose your mode
+    </x-slot>
+
     <div class="modes-container">
         <!-- easy mode -->
         <div class="mode-card easy-mode">

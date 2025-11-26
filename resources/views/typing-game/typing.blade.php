@@ -1,4 +1,8 @@
 <x-layout>
+    <x-slot:title>
+        Typing Speed Game
+    </x-slot>
+
     <div class="container">
         <div class="typing_bar">
             <!-- <div id="wordsOrQuotes">

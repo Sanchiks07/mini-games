@@ -1,4 +1,8 @@
 <x-layout>
+    <x-slot:title>
+        Memory Game Medium Mode
+    </x-slot>
+
     <div class="memory-container">
         <div class="timer">
             <h1>Timer</h1>

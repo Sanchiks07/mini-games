@@ -1,4 +1,8 @@
 <x-layout>
+    <x-slot:title>
+        Register
+    </x-slot>
+
     <div class="login">
         <h2>Register</h2>
         @if ($errors->any())
