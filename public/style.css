@@ -551,7 +551,7 @@ button.small-pretty:hover {
     transition: background-color 150ms ease-in-out;
 }
 
-.highscore-select {
+select {
     width: 300px;
     padding: 8px;
     border: solid 1px black;
@@ -657,7 +657,7 @@ button.small-pretty:hover {
         font-size: 18px;
     }
 
-    .highscore-select {
+    select {
         width: 350px;
         font-size: 18px;
     }
@@ -724,7 +724,7 @@ button.small-pretty:hover {
         width: 90%;
     }
 
-    .highscore-select {
+    select {
         width: 65%;
     }
 }
