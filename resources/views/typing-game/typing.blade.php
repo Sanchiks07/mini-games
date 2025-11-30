@@ -5,10 +5,7 @@
 
     <div class="container">
         <div class="typing_bar">
-            <!-- <div id="wordsOrQuotes">
-                <div onclick="wordsOrQuotes = 0;">words</div>
-                <div onclick="wordsOrQuotes = 0;">quote</div>
-            </div> -->
+            <div id="gameTimer" style="font-size:20px; margin-top:10px;">0.0s</div>
             <div id="difficulty_level">
                 <div id="difficulty_0" onclick="difficultyLevel(0)">Easy</div>
                 <div id="difficulty_1" onclick="difficultyLevel(1)">Medium</div>
@@ -59,7 +56,11 @@
     let wordsNumber = 50;
     let wordsOrQuotes = 0;
 
+    let timerInterval = null;
+    let timerValue = 0;
+
     let paragraph = "";
+    let spanParagraph = "";
     let lastValue = "";
 
     let words = [];
@@ -77,10 +78,30 @@
     difficultyLevel(0);
 
     inpField.addEventListener("input", initTyping);
-    inpField.addEventListener("keydown", checkWord);
+    document.addEventListener("keydown", focusInput, { once: true });
+    document.addEventListener("keydown", checkWord);
+
+    function focusInput() {
+        inpField.focus();
+    }
+
 
     // ---------- funkcijas ---------- //
     function difficultyLevel(valueId) {
+        charIndex = 0;
+        startTime = 0;
+        incorrectLetters = 0;
+        incorrectVord = 0;
+        wordStatus = [];
+        inpField.value = "";
+        lastValue = "";
+
+        document.getElementById("outputResult").style.display = "none";
+
+        clearInterval(timerInterval);
+        timerValue = 0;
+        document.getElementById("gameTimer").innerText = "0.0s";
+
         const selected = difficulties[valueId];
         wordsNumber = selected.words;
 
@@ -93,6 +114,7 @@
         loadParagraph();
     }
     function makeParagraphs() {
+        typingText.innerHTML = "";
         paragraph = "";
         while (paragraph.trim().split(/\s+/).length < wordsNumber) {
             const randomIndex = Math.floor(Math.random() * sentences.length);
@@ -101,12 +123,13 @@
         paragraph = paragraph.trim();
     }
     function loadParagraph() {
-        typingText.innerHTML = "";
-        paragraph.split("").forEach(char => {
-            typingText.innerHTML += `<span>${char}</span>`;
-        });
+        spanParagraph = "";
 
-        document.addEventListener("keydown", () => inpField.focus());
+        paragraph.split("").forEach(char => {
+            spanParagraph += `<span>${char}</span>`;
+        });
+        typingText.innerHTML += spanParagraph;
+
         typingText.querySelectorAll("span")[0]?.classList.add("active");
 
         words = paragraph.split(/\s+/); // iebāž masīvā tekstu
@@ -129,6 +152,8 @@
             if (typedChar === span.innerText) {
                 span.classList.add("correct");
             } else {
+                if (lastValue[i] !== typedChar) incorrectLetters++;
+
                 if (span.innerText === " " && typedChar !== " ") {
                     span.classList.add("space-incorrect");
                 } else {
@@ -139,7 +164,10 @@
 
         if (characters[charIndex]) characters[charIndex].classList.add("active");
 
-        if (startTime === 0 && currentValue.length > 0) startTime = Date.now();
+        if (startTime === 0 && currentValue.length > 0) {
+            startTime = Date.now();
+            startTimer();
+        }
 
         lastValue = currentValue;
 
@@ -149,6 +177,8 @@
         }
     }
     function checkWord(e) {
+        if (e.repeat) return;
+
         if (e.key === " " || e.key === "Enter") {
 
             let typedWords = inpField.value.trim().split(/\s+/);
@@ -157,7 +187,11 @@
             let typedWord = typedWords[index];
             let realWord = words[index];
 
-            let newStatus = (typedWord === realWord) ? "correct" : "incorrect";
+            let cleanTyped = typedWord.replace(/[^\wāčēģīķļņōŗšūž]/g, "");
+            let cleanReal  = realWord.replace(/[^\wāčēģīķļņōŗšūž]/g, "");
+
+            let newStatus = (cleanTyped === cleanReal) ? "correct" : "incorrect";
+
             let oldStatus = wordStatus[index];
 
             if (oldStatus !== newStatus) {
@@ -180,6 +214,8 @@
         let lastTypedWord = typedWords[lastIndex];
         let lastRealWord = words[lastIndex];
 
+        clearInterval(timerInterval);
+
         if (lastTypedWord !== lastRealWord) {
             if (wordStatus[lastIndex] !== 'incorrect') {
                 incorrectVord++;
@@ -191,10 +227,8 @@
             }
         }
 
-        let endTime = Date.now();
-
-        let timeInMin = (endTime - startTime) / 60000;
-        let timeInSec = ((endTime - startTime) / 1000).toFixed(1);
+        let timeInSec = parseFloat(timerValue);
+        let timeInMin = timeInSec / 60;
 
         let grossWPM = (charIndex / 5) / timeInMin;
         let WPM = Math.max(0, Math.round(grossWPM - incorrectVord));
@@ -230,5 +264,11 @@
                 difficulty: difficulties[oldDifficultyLevel].name
             })
         });
+    }
+    function startTimer() {
+        timerInterval = setInterval(() => {
+            timerValue = ((Date.now() - startTime) / 1000).toFixed(1);
+            document.getElementById("gameTimer").innerText = timerValue + "s";
+        }, 100);
     }
 </script>
