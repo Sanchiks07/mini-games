@@ -5,6 +5,15 @@
 
     <div class="login">
         <h2>Login</h2>
+        @if ($errors->any())
+            <div class="alert alert-danger">
+                <ul>
+                    @foreach ($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
+            </div>
+        @endif
         <form action="/login" method="POST" class="login-form">
             @csrf
             <input name="email" id="email" type="email" placeholder="E-mail..."/>

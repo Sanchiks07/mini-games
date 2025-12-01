@@ -468,7 +468,7 @@ button.small-pretty:hover {
     background-image: url("background-images/highscore-img.png");
     background-position: center;
     background-size: cover;
-    filter: blur(3px);
+    filter: blur(5px);
     opacity: 0.9;
     z-index: 0;             
 }
