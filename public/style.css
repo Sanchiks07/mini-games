@@ -705,6 +705,15 @@ select {
         width: 350px;
         font-size: 18px;
     }
+
+    /* typing game */
+    .container {
+        width: 90% !important;
+    }
+
+    .typing_bar{
+        width: 80% !important;
+    }
 }
 
 /* Phones */
@@ -770,6 +779,15 @@ select {
 
     select {
         width: 65%;
+    }
+
+    /* typing game */
+    .container {
+        width: 90% !important;
+    }
+
+    .typing_bar{
+        width: 80% !important;
     }
 }
 

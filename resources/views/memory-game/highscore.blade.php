@@ -6,7 +6,7 @@
     <div class="highscore-container">
         <h1>Memory Game Highscores</h1>
         <br>
-        <select class="highscore-select" id="highscoreModeSelect" onchange="filterHighscores()">
+        <select id="highscoreModeSelect" onchange="filterHighscores()">
             <option value="all">All Modes</option>
             <option value="easy">Easy Mode</option>
             <option value="medium">Medium Mode</option>
