@@ -44,231 +44,198 @@
 </style>
 
 <script>
-    const inpField = document.querySelector("#typing_input");
-    const typingText = document.querySelector("#typing_text");
+const inpField = document.querySelector("#typing_input");
+const typingText = document.querySelector("#typing_text");
 
-    let charIndex = 0;
-    let startTime = 0;
-    let incorrectLetters = 0;
-    let incorrectVord = 0;
-    let difficultyIndex = 0;
-    let oldDifficultyLevel = 0;
-    let wordsNumber = 50;
-    let wordsOrQuotes = 0;
+let charIndex = 0;
+let startTime = 0;
+let incorrectLetters = 0;
+let incorrectVord = 0;
+let oldDifficultyLevel = 0;
+let wordsNumber = 50;
+let timerInterval = null;
+let timerValue = 0;
+let paragraph = "";
+let lastValue = "";
+let words = [];
+let wordStatus = [];
 
-    let timerInterval = null;
-    let timerValue = 0;
+const difficulties = [
+    {name: "easy", words: 5},
+    {name: "medium", words: 100},
+    {name: "hard", words: 150},
+    {name: "hardCore", words: 300}
+];
 
-    let paragraph = "";
-    let spanParagraph = "";
-    let lastValue = "";
+window.userName = "{{ Auth::user()->name ?? '' }}";
+const sentences = @json($sentences);
 
-    let words = [];
-    let wordStatus = []; 
-    const difficulties = [
-        {name: "easy", words: 5 },
-        {name: "medium", words: 100 },
-        {name: "hard", words: 150 },
-        {name: "hardCore", words: 300 }
-    ];
+difficultyLevel(0);
 
-    window.userName = "{{ Auth::user()->name ?? '' }}";
-    const sentences = @json($sentences);
+inpField.addEventListener("input", initTyping);
+document.addEventListener("keydown", () => inpField.focus());
+document.addEventListener("keydown", checkWord);
 
-    difficultyLevel(0);
+function difficultyLevel(valueId) {
+    charIndex = 0;
+    startTime = 0;
+    incorrectLetters = 0;
+    incorrectVord = 0;
+    wordStatus = [];
+    inpField.value = "";
+    lastValue = "";
+    document.getElementById("outputResult").style.display = "none";
+    clearInterval(timerInterval);
+    timerValue = 0;
+    document.getElementById("gameTimer").innerText = "0.0s";
 
-    inpField.addEventListener("input", initTyping);
-    document.addEventListener("keydown", focusInput, { once: true });
-    document.addEventListener("keydown", checkWord);
+    const selected = difficulties[valueId];
+    wordsNumber = selected.words;
 
-    function focusInput() {
-        inpField.focus();
+    document.querySelector("#difficulty_" + oldDifficultyLevel).classList.remove("selected_difficulty");
+    document.querySelector("#difficulty_" + valueId).classList.add("selected_difficulty");
+    oldDifficultyLevel = valueId;
+
+    makeParagraphs();
+    loadParagraph();
+}
+
+function makeParagraphs() {
+    paragraph = "";
+    while (paragraph.trim().split(/\s+/).length < wordsNumber) {
+        const randomIndex = Math.floor(Math.random() * sentences.length);
+        paragraph += sentences[randomIndex].sentence + " ";
     }
+    paragraph = paragraph.trim();
+}
 
+function loadParagraph() {
+    typingText.innerHTML = "";
+    let out = "";
+    for (let c of paragraph) out += "<span>" + c + "</span>";
+    typingText.innerHTML = out;
+    typingText.querySelectorAll("span")[0].classList.add("active");
+    words = paragraph.split(/\s+/);
+}
 
-    // ---------- funkcijas ---------- //
-    function difficultyLevel(valueId) {
-        charIndex = 0;
-        startTime = 0;
-        incorrectLetters = 0;
-        incorrectVord = 0;
-        wordStatus = [];
-        inpField.value = "";
-        lastValue = "";
+function initTyping() {
+    const characters = typingText.querySelectorAll("span");
+    const currentValue = inpField.value;
 
-        document.getElementById("outputResult").style.display = "none";
+    characters.forEach(s => s.classList.remove("active"));
 
-        clearInterval(timerInterval);
-        timerValue = 0;
-        document.getElementById("gameTimer").innerText = "0.0s";
+    charIndex = currentValue.length;
 
-        const selected = difficulties[valueId];
-        wordsNumber = selected.words;
+    for (let i = 0; i < characters.length; i++) {
+        const span = characters[i];
+        const typedChar = currentValue[i];
+        span.classList.remove("correct","incorrect","space-incorrect");
+        if (typedChar === undefined) continue;
 
-        document.querySelector("#difficulty_" + oldDifficultyLevel).classList.remove("selected_difficulty");
-        document.querySelector("#difficulty_" + valueId).classList.add("selected_difficulty");
-
-        oldDifficultyLevel = valueId;
-
-        makeParagraphs();
-        loadParagraph();
-    }
-    function makeParagraphs() {
-        typingText.innerHTML = "";
-        paragraph = "";
-        while (paragraph.trim().split(/\s+/).length < wordsNumber) {
-            const randomIndex = Math.floor(Math.random() * sentences.length);
-            paragraph += sentences[randomIndex].sentence + " ";
-        }
-        paragraph = paragraph.trim();
-    }
-    function loadParagraph() {
-        spanParagraph = "";
-
-        paragraph.split("").forEach(char => {
-            spanParagraph += `<span>${char}</span>`;
-        });
-        typingText.innerHTML += spanParagraph;
-
-        typingText.querySelectorAll("span")[0]?.classList.add("active");
-
-        words = paragraph.split(/\s+/); // iebāž masīvā tekstu
-    }
-    function initTyping() {
-        const characters = typingText.querySelectorAll("span");
-        const currentValue = inpField.value;
-
-        characters.forEach(span => span.classList.remove("active"));
-
-        charIndex = currentValue.length;
-        for (let i = 0; i < characters.length; i++) {
-            const span = characters[i];
-            const typedChar = currentValue[i];
-
-            span.classList.remove("correct","incorrect","space-incorrect");
-
-            if (typedChar === undefined) continue;
-
-            if (typedChar === span.innerText) {
-                span.classList.add("correct");
-            } else {
-                if (lastValue[i] !== typedChar) incorrectLetters++;
-
-                if (span.innerText === " " && typedChar !== " ") {
-                    span.classList.add("space-incorrect");
-                } else {
-                    span.classList.add("incorrect");
-                }
-            }
-        }
-
-        if (characters[charIndex]) characters[charIndex].classList.add("active");
-
-        if (startTime === 0 && currentValue.length > 0) {
-            startTime = Date.now();
-            startTimer();
-        }
-
-        lastValue = currentValue;
-
-        if (charIndex === characters.length) {
-            inpField.blur();
-            resultValues();
+        if (typedChar === span.innerText) span.classList.add("correct");
+        else {
+            if (lastValue[i] !== typedChar) incorrectLetters++;
+            if (span.innerText === " " && typedChar !== " ") span.classList.add("space-incorrect");
+            else span.classList.add("incorrect");
         }
     }
-    function checkWord(e) {
-        if (e.repeat) return;
 
-        if (e.key === " " || e.key === "Enter") {
+    if (characters[charIndex]) characters[charIndex].classList.add("active");
 
-            let typedWords = inpField.value.trim().split(/\s+/);
-            let index = typedWords.length - 1;
-
-            let typedWord = typedWords[index];
-            let realWord = words[index];
-
-            let cleanTyped = typedWord.replace(/[^\wāčēģīķļņōŗšūž]/g, "");
-            let cleanReal  = realWord.replace(/[^\wāčēģīķļņōŗšūž]/g, "");
-
-            let newStatus = (cleanTyped === cleanReal) ? "correct" : "incorrect";
-
-            let oldStatus = wordStatus[index];
-
-            if (oldStatus !== newStatus) {
-                if (oldStatus === "incorrect" && newStatus === "correct") {
-                    incorrectVord--;
-                }
-                if (oldStatus === "correct" && newStatus === "incorrect") {
-                    incorrectVord++;
-                }
-                if (oldStatus === undefined && newStatus === "incorrect") {
-                    incorrectVord++;
-                }
-            }
-            wordStatus[index] = newStatus;
-        }
+    if (startTime === 0 && currentValue.length > 0) {
+        startTime = Date.now();
+        startTimer();
     }
-    function resultValues() {
-        let typedWords = inpField.value.trim().split(/\s+/);
-        let lastIndex = typedWords.length - 1;
-        let lastTypedWord = typedWords[lastIndex];
-        let lastRealWord = words[lastIndex];
 
-        clearInterval(timerInterval);
+    lastValue = currentValue;
 
-        if (lastTypedWord !== lastRealWord) {
-            if (wordStatus[lastIndex] !== 'incorrect') {
-                incorrectVord++;
-                wordStatus[lastIndex] = 'incorrect';
-            }
-        } else {
-            if (wordStatus[lastIndex] !== 'correct') {
-                wordStatus[lastIndex] = 'correct';
-            }
-        }
-
-        let timeInSec = parseFloat(timerValue);
-        let timeInMin = timeInSec / 60;
-
-        let grossWPM = (charIndex / 5) / timeInMin;
-        let WPM = Math.max(0, Math.round(grossWPM - incorrectVord));
-
-        let totalWordsTyped = wordStatus.length;
-        let correctWords = wordStatus.filter(w => w === "correct").length;
-
-        let accuracy = 0;
-        if (totalWordsTyped > 0) {
-            accuracy = Math.round((correctWords / totalWordsTyped) * 100);
-        }
-
-        document.getElementById("outputUserName").innerText = "Lietotājs: " + (window.userName ?? "N/A");
-        document.getElementById("outputTime").innerText = "Laiks: " + timeInSec + " sekundes";
-        document.getElementById("outputAcc").innerText = "Precizitāte: " + accuracy + "%";
-        document.getElementById("outputWPM").innerText = "WPM: " + WPM;
-        document.getElementById("outputIncorrectVord").innerText = "Kļūdainie vārdi: " + incorrectVord;
-
-        document.getElementById("outputResult").style.display = "block";
-
-        fetch("/typing-game", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-                "X-CSRF-TOKEN": "{{ csrf_token() }}"
-            },
-            body: JSON.stringify({
-                time_seconds: timeInSec,
-                accuracy: accuracy,
-                wpm: WPM,
-                incorrect_words: incorrectVord,
-                incorrect_letters: incorrectLetters,
-                difficulty: difficulties[oldDifficultyLevel].name
-            })
-        });
+    if (charIndex === characters.length) {
+        inpField.blur();
+        resultValues();
     }
-    function startTimer() {
-        timerInterval = setInterval(() => {
-            timerValue = ((Date.now() - startTime) / 1000).toFixed(1);
-            document.getElementById("gameTimer").innerText = timerValue + "s";
-        }, 100);
+}
+
+function checkWord(e) {
+    if (e.repeat) return;
+    if (e.key !== " " && e.key !== "Enter") return;
+
+    let typedWords = inpField.value.trim().split(/\s+/);
+    let index = typedWords.length - 1;
+    let typedWord = typedWords[index] ?? "";
+    let realWord = words[index] ?? "";
+
+    let cleanTyped = typedWord.replace(/[^\wāčēģīķļņōŗšūž]/g, "");
+    let cleanReal = realWord.replace(/[^\wāčēģīķļņōŗšūž]/g, "");
+
+    let newStatus = cleanTyped === cleanReal ? "correct" : "incorrect";
+    let oldStatus = wordStatus[index];
+
+    if (oldStatus !== newStatus) {
+        if (oldStatus === "incorrect" && newStatus === "correct") incorrectVord--;
+        if (oldStatus === "correct" && newStatus === "incorrect") incorrectVord++;
+        if (oldStatus === undefined && newStatus === "incorrect") incorrectVord++;
     }
+
+    wordStatus[index] = newStatus;
+}
+
+function resultValues() {
+    let typedWords = inpField.value.trim().split(/\s+/);
+    let lastIndex = typedWords.length - 1;
+    let lastTypedWord = typedWords[lastIndex] ?? "";
+    let lastRealWord = words[lastIndex] ?? "";
+
+    clearInterval(timerInterval);
+
+    if (lastTypedWord !== lastRealWord) {
+        if (wordStatus[lastIndex] !== "incorrect") {
+            incorrectVord++;
+            wordStatus[lastIndex] = "incorrect";
+        }
+    } else {
+        wordStatus[lastIndex] = "correct";
+    }
+
+    let timeInSec = parseFloat(timerValue);
+    if (timeInSec <= 0) timeInSec = 1;
+
+    let timeInMin = timeInSec / 60;
+    let grossWPM = (charIndex / 5) / timeInMin;
+    let WPM = Math.max(0, Math.round(grossWPM - incorrectVord));
+
+    let totalWordsTyped = wordStatus.length;
+    let correctWords = wordStatus.filter(w => w === "correct").length;
+    let accuracy = totalWordsTyped > 0 ? Math.round((correctWords / totalWordsTyped) * 100) : 0;
+
+    document.getElementById("outputUserName").innerText = "Lietotājs: " + (window.userName ?? "N/A");
+    document.getElementById("outputTime").innerText = "Laiks: " + timeInSec + " sekundes";
+    document.getElementById("outputAcc").innerText = "Precizitāte: " + accuracy + "%";
+    document.getElementById("outputWPM").innerText = "WPM: " + WPM;
+    document.getElementById("outputIncorrectVord").innerText = "Kļūdainie vārdi: " + incorrectVord;
+
+    document.getElementById("outputResult").style.display = "block";
+
+    fetch("/typing-game", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+            "X-CSRF-TOKEN": "{{ csrf_token() }}"
+        },
+        body: JSON.stringify({
+            time_seconds: timeInSec,
+            accuracy: accuracy,
+            wpm: WPM,
+            incorrect_words: incorrectVord,
+            incorrect_letters: incorrectLetters,
+            difficulty: difficulties[oldDifficultyLevel].name
+        })
+    });
+}
+
+function startTimer() {
+    timerInterval = setInterval(() => {
+        timerValue = ((Date.now() - startTime) / 1000).toFixed(1);
+        document.getElementById("gameTimer").innerText = timerValue + "s";
+    }, 100);
+}
 </script>

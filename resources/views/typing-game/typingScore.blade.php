@@ -2,54 +2,60 @@
     <div class="highscore-container">
         <h1>Typing Game Highscores</h1>
         <br>
-        <select id="highscoreModeSelect" onchange="filterHighscores()">
+
+        <select id="highscoreModeSelect" onchange="filterHighscores()" class="difficulty-select">
             <option value="all">All</option>
             <option value="easy">Easy</option>
             <option value="medium">Medium</option>
             <option value="hard">Hard</option>
             <option value="hardcore">HardCore</option>
         </select>
-        <br>
+
+        <br><br>
+
         <table class="highscore-table">
             <thead>
                 <tr>
                     <th>Rank</th>
                     <th>Username</th>
                     <th>Difficulty</th>
-                    <th>Time (seconds)</th>
+                    <th>WPM</th>
+                    <th>Accuracy</th>
+                    <th>Incorrect Words</th>
+                    <th>Incorrect Letters</th>
+                    <th>Time (s)</th>
                 </tr>
             </thead>
+
             <tbody id="highscoreTableBody">
                 @foreach($highscores as $index => $score)
-                    <tr data-difficulty="{{ $score->difficulty }}">
+                    <tr data-difficulty="{{ strtolower($score->difficulty) }}">
                         <td>{{ $index + 1 }}</td>
                         <td>{{ $score->user->name }}</td>
                         <td>{{ ucfirst($score->difficulty) }}</td>
+                        <td>{{ $score->wpm }}</td>
+                        <td>{{ $score->accuracy }}%</td>
+                        <td>{{ $score->incorrect_words }}</td>
+                        <td>{{ $score->incorrect_letters }}</td>
                         <td>{{ $score->time_seconds }}</td>
                     </tr>
                 @endforeach
             </tbody>
         </table>
     </div>
-    
+
     <script>
         document.addEventListener('DOMContentLoaded', function () {
             window.filterHighscores = function () {
-                const select = document.getElementById('highscoreModeSelect');
-                const tbody = document.getElementById('highscoreTableBody');
-                if (!select || !tbody) return;
-
-                const rows = Array.from(tbody.querySelectorAll('tr'));
-                const mode = select.value;
+                const mode = document.getElementById('highscoreModeSelect').value;
+                const rows = document.querySelectorAll('#highscoreTableBody tr');
                 let rank = 1;
 
                 rows.forEach(row => {
-                    const rowDifficulty = (row.getAttribute('data-difficulty') || '').toLowerCase();
-
-                    if (mode === 'all' || rowDifficulty === mode.toLowerCase()) {
+                    const rowDiff = row.getAttribute('data-difficulty');
+                    if (mode === 'all' || rowDiff === mode) {
                         row.style.display = '';
-                        const rankCell = row.querySelector('td');
-                        if (rankCell) rankCell.textContent = rank++;
+                        row.children[0].textContent = rank++;
                     } else {
                         row.style.display = 'none';
                     }

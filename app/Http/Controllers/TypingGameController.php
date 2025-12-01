@@ -13,7 +13,13 @@ class TypingGameController extends Controller
         return view('typing-game.typing', compact('sentences'));
     }
     public function score() {
-        $highscores = \App\Models\TypingResults::with('user')->orderBy('difficulty')->orderBy('time_seconds')->get();
+        $highscores = TypingResults::with('user')
+            ->orderBy('difficulty')
+            ->orderByDesc('accuracy')
+            ->orderByDesc('wpm')
+            ->orderBy('incorrect_words')
+            ->orderBy('time_seconds')
+            ->get();
         
         return view('typing-game.typingScore', compact('highscores'));
     }
@@ -27,6 +33,19 @@ class TypingGameController extends Controller
             'incorrect_letters' => 'required|integer',
             'difficulty' => 'required|in:easy,medium,hard,hardCore'
         ]);
+
+        if ($request->accuracy < 50) {
+            return;
+        }
+
+        if ($request->wpm > 300) {
+            return;
+        }
+
+        if ($request->incorrect_words > $request->wpm) {
+            return;
+        }
+
 
         $score = TypingResults::create([
             'user_id' => auth()->id(),
