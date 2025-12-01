@@ -590,6 +590,37 @@ button.small-pretty:hover {
     transition: background-color 150ms ease-in-out;
 }
 
+.typing-highscore-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    min-height: calc(100vh - 60px);
+    padding: 20px 0;
+}
+
+.typing-highscore-table, .typing-highscore-table th, .typing-highscore-table td {
+    width: 600px;
+    border-collapse: collapse;
+    border: solid 1px black;
+    padding: 8px;
+    text-align: center;
+}
+
+.typing-highscore-table thead th {
+  background-color: var(--memory-table-head-bg);
+}
+
+.typing-highscore-table tr {
+  background-color: var(--memory-table-body-bg);
+}
+
+.typing-highscore-table tbody tr:hover {
+    background-color: var(--memory-table-hover);
+    transition: background-color 150ms ease-in-out;
+}
+
 select {
     width: 300px;
     padding: 8px;
@@ -714,6 +745,14 @@ select {
     .typing_bar{
         width: 80% !important;
     }
+
+    .typing-highscore-container h1 {
+        font-size: 40px;
+    }
+    .typing-highscore-table, .typing-highscore-table th, .typing-highscore-table td {
+        width: 700px;
+        font-size: 18px;
+    }
 }
 
 /* Phones */
@@ -788,6 +827,14 @@ select {
 
     .typing_bar{
         width: 80% !important;
+    }
+
+    .typing-highscore-container h1 {
+        font-size: 28px;
+    }
+
+    .typing-highscore-table, .typing-highscore-table th, .typing-highscore-table td {
+        width: 90%;
     }
 }
 

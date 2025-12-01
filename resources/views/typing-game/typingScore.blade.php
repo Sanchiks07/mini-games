@@ -1,5 +1,5 @@
 <x-layout>
-    <div class="highscore-container">
+    <div class="typing-highscore-container">
         <h1>Typing Game Highscores</h1>
         <br>
 
@@ -13,16 +13,13 @@
 
         <br><br>
 
-        <table class="highscore-table">
+        <table class="typing-highscore-table">
             <thead>
                 <tr>
                     <th>Rank</th>
                     <th>Username</th>
                     <th>Difficulty</th>
                     <th>WPM</th>
-                    <th>Accuracy</th>
-                    <th>Incorrect Words</th>
-                    <th>Incorrect Letters</th>
                     <th>Time (s)</th>
                 </tr>
             </thead>
@@ -34,9 +31,6 @@
                         <td>{{ $score->user->name }}</td>
                         <td>{{ ucfirst($score->difficulty) }}</td>
                         <td>{{ $score->wpm }}</td>
-                        <td>{{ $score->accuracy }}%</td>
-                        <td>{{ $score->incorrect_words }}</td>
-                        <td>{{ $score->incorrect_letters }}</td>
                         <td>{{ $score->time_seconds }}</td>
                     </tr>
                 @endforeach
